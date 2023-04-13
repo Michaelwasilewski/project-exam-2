@@ -2,6 +2,7 @@ import React, {
 	useState,
 	useEffect,
 } from 'react';
+import { Component } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -27,12 +28,13 @@ const VenuesCarousel = () => {
 
 	const sliderSettings = {
 		dots: true,
+		arrows: true,
 		infinite: true,
 		speed: 500,
 		slidesToShow: 3,
 		slidesToScroll: 3,
 		autoplay: true,
-		autoplaySpeed: 2000,
+		autoplaySpeed: 8000,
 		responsive: [
 			{
 				breakpoint: 768,
@@ -41,13 +43,23 @@ const VenuesCarousel = () => {
 					slidesToScroll: 1,
 				},
 			},
+			{
+				breakpoint: 1028,
+				settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2,
+				},
+			},
 		],
 	};
 	return (
 		<div>
 			<Slider {...sliderSettings}>
 				{venues.map((venue) => (
-					<div key={venue.id}>
+					<div
+						className="card-container px-0.5 py-0.5"
+						key={venue.id}
+					>
 						<Venue venue={venue} />
 					</div>
 				))}
