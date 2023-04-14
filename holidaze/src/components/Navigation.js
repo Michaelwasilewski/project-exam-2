@@ -5,7 +5,9 @@ import {
 	FaBookmark,
 	FaMapMarkedAlt,
 	FaPlus,
+	FaSignInAlt,
 } from 'react-icons/fa';
+import Logo from '../img/holidazelogo.png';
 
 function Navigation() {
 	const [isMenuOpen, setIsMenuOpen] =
@@ -22,8 +24,8 @@ function Navigation() {
 					<div className="flex-shrink-0 flex items-center">
 						<Link to="/">
 							<img
-								className="h-8 w-auto"
-								src="/logo.svg"
+								className="h-16 w-auto"
+								src={Logo}
 								alt="Holidaze logo"
 							/>
 						</Link>
@@ -50,6 +52,13 @@ function Navigation() {
 							>
 								<FaMapMarkedAlt className="mr-2" />
 								My Venues
+							</Link>
+							<Link
+								to="/login"
+								className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center"
+							>
+								<FaSignInAlt className="mr-2" />
+								Login
 							</Link>
 							<Link
 								to="/add-venue"

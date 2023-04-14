@@ -6,15 +6,15 @@ const Venue = ({ venue }) => {
 		setShowMore(!showMore);
 
 	return (
-		<div className="container bg-gray-900 rounded-lg shadow-lg overflow-hidden p-2">
+		<div className="container bg-gray-900 rounded-lg shadow-lg overflow-hidden p-2 my-2">
 			<div className="relative">
 				<img
 					src={venue.media[0]}
 					alt={venue.name}
 					className="w-full h-96 object-cover"
 				/>
-				<div className="absolute bottom-0 left-0 p-4">
-					<h3 className="text-lg font-bold text-white">
+				<div className="absolute bottom-0 left-0 p-4 bg-black bg-opacity-25">
+					<h3 className="text-2xl font-bold text-white">
 						{venue.name}
 					</h3>
 				</div>
@@ -24,6 +24,7 @@ const Venue = ({ venue }) => {
 					className={`text-white ${
 						showMore ? '' : 'truncate'
 					}`}
+					style={{ lineHeight: '1.6' }}
 				>
 					{venue.description}
 				</p>
@@ -31,6 +32,10 @@ const Venue = ({ venue }) => {
 					<button
 						className="text-blue-500 hover:text-blue-700"
 						onClick={toggleShowMore}
+						style={{
+							marginTop: '8px',
+							fontSize: '14px',
+						}}
 					>
 						Show more
 					</button>
@@ -39,14 +44,27 @@ const Venue = ({ venue }) => {
 					<button
 						className="text-blue-500 hover:text-blue-700"
 						onClick={toggleShowMore}
+						style={{
+							marginTop: '8px',
+							fontSize: '14px',
+						}}
 					>
 						Show less
 					</button>
 				)}
-				<p className="text-white">
-					Price: ${venue.price} per night
+				<p className="text-gray-300 font-medium text-lg mt-4">
+					<span className="text-white mr-2">
+						Price:
+					</span>
+					<span className="text-yellow-300">
+						${venue.price}
+					</span>
+					<span className="text-yellow-300 text-sm">
+						{' '}
+						per night
+					</span>
 				</p>
-				<p className="text-white">
+				<p className="text-white font-medium text-lg mt-4">
 					Max guests: {venue.maxGuests}
 				</p>
 				<div className="flex flex-wrap mt-2">
@@ -94,6 +112,7 @@ const Venue = ({ venue }) => {
 				<a
 					href={`/hotels/${venue.id}`}
 					className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block"
+					style={{ fontSize: '16px' }}
 				>
 					Book now
 				</a>
