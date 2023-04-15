@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
 	FaGlobe,
 	FaBookmark,
@@ -7,9 +7,9 @@ import {
 	FaPlus,
 	FaSignInAlt,
 } from 'react-icons/fa';
-import Logo from '../img/holidazelogo.png';
+import Logo from '../../img/holidazelogo.png';
 
-function Navigation() {
+function Header() {
 	const [isMenuOpen, setIsMenuOpen] =
 		useState(false);
 
@@ -22,51 +22,51 @@ function Navigation() {
 			<div className="mx-auto px-2 sm:px-6 lg:px-8">
 				<div className="flex justify-between h-16">
 					<div className="flex-shrink-0 flex items-center">
-						<Link to="/">
+						<NavLink to="/">
 							<img
 								className="h-16 w-auto"
 								src={Logo}
 								alt="Holidaze logo"
 							/>
-						</Link>
+						</NavLink>
 					</div>
 					<div className="hidden md:block">
 						<div className="ml-10 mt-3 flex items-baseline space-x-4">
-							<Link
+							<NavLink
 								to="/browse-destinations"
 								className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center"
 							>
 								<FaGlobe className="mr-2" />
 								Browse Destinations
-							</Link>
-							<Link
+							</NavLink>
+							<NavLink
 								to="/my-bookings"
 								className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center"
 							>
 								<FaBookmark className="mr-2" />
 								My Bookings
-							</Link>
-							<Link
+							</NavLink>
+							<NavLink
 								to="/my-venues"
 								className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center"
 							>
 								<FaMapMarkedAlt className="mr-2" />
 								My Venues
-							</Link>
-							<Link
+							</NavLink>
+							<NavLink
 								to="/login"
 								className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center"
 							>
 								<FaSignInAlt className="mr-2" />
 								Login
-							</Link>
-							<Link
+							</NavLink>
+							<NavLink
 								to="/add-venue"
 								className="text-white bg-red-600 hover:bg-red-700 px-3 py-2 rounded-md text-sm font-medium flex items-center"
 							>
 								<FaPlus className="mr-2" />
 								Add Venue
-							</Link>
+							</NavLink>
 						</div>
 					</div>
 					<div className="-mr-2 flex items-center md:hidden">
@@ -123,38 +123,38 @@ function Navigation() {
 				} md:hidden`}
 			>
 				<div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-					<Link
+					<NavLink
 						to="/browse-destinations"
 						className="text-gray-700 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
 					>
 						<FaGlobe className="inline-block mr-2 text-lg" />
 						Browse Destinations
-					</Link>
-					<Link
+					</NavLink>
+					<NavLink
 						to="/my-bookings"
 						className="text-gray-700 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
 					>
 						<FaBookmark className="inline-block mr-2 text-lg" />
 						My Bookings
-					</Link>
-					<Link
+					</NavLink>
+					<NavLink
 						to="/my-venues"
 						className="text-gray-700 hover:text-gray-900 block px-3 py-2 rounded-md text-base font-medium"
 					>
 						<FaMapMarkedAlt className="inline-block mr-2 text-lg" />
 						My Venues
-					</Link>
-					<Link
+					</NavLink>
+					<NavLink
 						to="/add-venue"
 						className="text-white bg-red-600 hover:bg-red-700 block px-3 py-2 rounded-md text-base font-medium"
 					>
 						<FaPlus className="inline-block mr-2 text-lg" />
 						Add Venue
-					</Link>
+					</NavLink>
 				</div>
 			</div>
 		</nav>
 	);
 }
 
-export default Navigation;
+export default Header;

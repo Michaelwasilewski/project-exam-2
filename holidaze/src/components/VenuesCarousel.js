@@ -2,7 +2,6 @@ import React, {
 	useState,
 	useEffect,
 } from 'react';
-import { Component } from 'react';
 import axios from 'axios';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -57,7 +56,7 @@ const VenuesCarousel = () => {
 			<Slider {...sliderSettings}>
 				{venues.map((venue) => (
 					<div
-						className="card-container px-0.5 py-0.5"
+						className="px-0.5 py-0.5"
 						key={venue.id}
 					>
 						<Venue venue={venue} />
