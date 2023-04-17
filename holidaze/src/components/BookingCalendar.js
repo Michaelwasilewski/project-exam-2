@@ -4,7 +4,6 @@ import {
 	faSearch,
 	faQuestionCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { Tooltip } from 'react-tooltip';
 
 const SearchForm = () => {
 	const [startDate, setStartDate] =
@@ -118,14 +117,20 @@ const SearchForm = () => {
 							<FontAwesomeIcon
 								icon={faQuestionCircle}
 							/>
+
 							{showGuests && (
-								<div className="absolute top-full right-0 mt-2 bg-white border border-gray-300 p-2 rounded-md z-10">
+								<div className="absolute top-full right-0 mt-2 bg-white border border-gray-300 p-2 rounded-md">
 									<label
 										htmlFor="guests"
 										className="block text-gray-700 font-semibold mb-2 cursor-pointer"
 									>
-										Guests
+										<div className="absolute top-full left-0 ml-2 w-64 p-2 bg-white rounded-md shadow-lg">
+											<p className="text-gray-700 text-sm font-medium">
+												Select how many guests
+											</p>
+										</div>
 									</label>
+
 									<input
 										id="guests"
 										type="number"

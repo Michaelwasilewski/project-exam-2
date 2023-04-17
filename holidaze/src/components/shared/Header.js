@@ -54,7 +54,7 @@ function Header() {
 								My Venues
 							</NavLink>
 							<NavLink
-								to="/login"
+								to="/register"
 								className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium flex items-center"
 							>
 								<FaSignInAlt className="mr-2" />

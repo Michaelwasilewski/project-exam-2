@@ -33,7 +33,7 @@ const VenuesCarousel = () => {
 		slidesToShow: 3,
 		slidesToScroll: 3,
 		autoplay: true,
-		autoplaySpeed: 8000,
+		autoplaySpeed: 3500,
 		responsive: [
 			{
 				breakpoint: 768,
