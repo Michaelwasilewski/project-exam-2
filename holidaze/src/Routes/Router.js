@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Venues from '../components/Views/Venues';
 import LoginPage from '../components/Views/Venues';
 import RegisterPage from '../components/Views/RegisterPage';
+import CreateVenueForm from '../components/Views/CreateVenueForm';
 
 const Router = () => {
 	return (
@@ -16,6 +17,10 @@ const Router = () => {
 				<Route
 					path="/register"
 					element={<RegisterPage />}
+				/>
+				<Route
+					path="/create-venue"
+					element={<CreateVenueForm />}
 				/>
 			</Routes>
 		</>

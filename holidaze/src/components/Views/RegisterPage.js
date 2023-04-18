@@ -64,6 +64,7 @@ export default function Example() {
 					'token',
 					data.access_token
 				);
+
 				// redirect to the dashboard or other appropriate page
 			} else {
 				const errorData = await response.json();

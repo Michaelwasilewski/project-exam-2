@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
 	return (
-		<footer className="bg-gray-900">
-			<div className="container mx-auto px-4 py-8">
+		<footer className="bg-gray-800 shadow-lg">
+			<div
+				className="mx-auto px-4 py-8"
+				style={{ width: '80%' }}
+			>
 				<div className="flex flex-wrap">
 					<div className="w-full md:w-1/3 lg:w-1/4 mb-8">
-						<h2 className="text-white text-lg font-semibold mb-4">
+						<h2 className="text-gray-800 text-lg font-semibold mb-4">
 							Links
 						</h2>
 						<ul className="list-none">
@@ -46,7 +49,7 @@ const Footer = () => {
 						</ul>
 					</div>
 					<div className="w-full md:w-1/3 lg:w-1/4 mb-8">
-						<h2 className="text-white text-lg font-semibold mb-4">
+						<h2 className="text-gray-800 text-lg font-semibold mb-4">
 							Contact Us
 						</h2>
 						<ul className="list-none">
@@ -77,7 +80,7 @@ const Footer = () => {
 						</ul>
 					</div>
 					<div className="w-full md:w-1/3 lg:w-1/4 mb-8">
-						<h2 className="text-white text-lg font-semibold mb-4">
+						<h2 className="text-gray-800 text-lg font-semibold mb-4">
 							About Us
 						</h2>
 						<ul className="list-none">
@@ -108,7 +111,7 @@ const Footer = () => {
 						</ul>
 					</div>
 					<div className="w-full md:w-1/3 lg:w-1/4 mb-8">
-						<h2 className="text-white text-lg font-semibold mb-4">
+						<h2 className="text-gray-800 text-lg font-semibold mb-4">
 							Follow Us
 						</h2>
 						<ul className="list-none">
@@ -143,8 +146,8 @@ const Footer = () => {
 						</ul>
 					</div>
 				</div>
-				<div className="mt-8 border-t border-gray-800 pt-8">
-					<p className="text-base text-gray-400">
+				<div className="mt-8 border-t border-gray-200 pt-8">
+					<p className="text-base text-gray-500">
 						&copy; 2023 Your Company. All rights
 						reserved.
 					</p>

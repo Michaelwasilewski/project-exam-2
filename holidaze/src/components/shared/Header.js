@@ -8,6 +8,7 @@ import {
 	FaSignInAlt,
 } from 'react-icons/fa';
 import Logo from '../../img/holidazelogo.png';
+import SearchBar from '../SearchBar';
 
 function Header() {
 	const [isMenuOpen, setIsMenuOpen] =
@@ -61,12 +62,15 @@ function Header() {
 								Login
 							</NavLink>
 							<NavLink
-								to="/add-venue"
+								to="/create-venue"
 								className="text-white bg-red-600 hover:bg-red-700 px-3 py-2 rounded-md text-sm font-medium flex items-center"
 							>
 								<FaPlus className="mr-2" />
 								Add Venue
 							</NavLink>
+						</div>
+						<div className="mt-3">
+							<SearchBar />
 						</div>
 					</div>
 					<div className="-mr-2 flex items-center md:hidden">
