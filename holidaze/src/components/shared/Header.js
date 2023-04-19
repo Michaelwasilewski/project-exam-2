@@ -17,7 +17,7 @@ function Header() {
 				<div className="flex justify-between items-center">
 					<Link to="/">
 						<img
-							className="h-8 md:h-10"
+							className="h-16 md:h-10"
 							src={Logo}
 							alt="Holidaze logo"
 						/>
@@ -40,31 +40,31 @@ function Header() {
 				>
 					<Link
 						to="/browse-destinations"
-						className="block mt-4 md:inline-block md:mt-0 mx-4 text-gray-600 hover:text-gray-900"
+						className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-gray-700 hover:text-white hover:bg-gray-800 transition-colors duration-300 px-4 py-2 rounded-md"
 					>
 						Destinations
 					</Link>
 					<Link
 						to="/my-bookings"
-						className="block mt-4 md:inline-block md:mt-0 mx-4 text-gray-600 hover:text-gray-900"
+						className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-gray-700 hover:text-white hover:bg-gray-800 transition-colors duration-300 px-4 py-2 rounded-md"
 					>
 						Bookings
 					</Link>
 					<Link
 						to="/my-venues"
-						className="block mt-4 md:inline-block md:mt-0 mx-4 text-gray-600 hover:text-gray-900"
+						className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-gray-700 hover:text-white hover:bg-gray-800 transition-colors duration-300 px-4 py-2 rounded-md"
 					>
 						Venues
 					</Link>
 					<Link
 						to="/register"
-						className="block mt-4 md:inline-block md:mt-0 mx-4 text-gray-600 hover:text-gray-900"
+						className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-blue-500 hover:bg-blue-600 rounded-md transition-colors duration-300 shadow-md"
 					>
-						Login
+						Register
 					</Link>
 					<Link
 						to="/create-venue"
-						className="block mt-4 md:inline-block md:mt-0 mx-4 font-bold hover:bg-black transition-colors text-black hover:text-white  rounded-md px-3 py-2 bg-gray-300"
+						className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-gray-800 font-bold bg-orange-400 hover:bg-orange-500 rounded-md transition-colors duration-300 shadow-md"
 					>
 						Add Venue
 					</Link>
