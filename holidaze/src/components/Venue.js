@@ -6,22 +6,22 @@ const Venue = ({ venue }) => {
 		setShowMore(!showMore);
 
 	return (
-		<div className="container bg-gray-900 rounded-lg shadow-lg overflow-hidden p-2 my-2">
+		<div className="bg-gray-800 rounded-sm shadow-lg overflow-hidden p-4 my-2 mx-2">
 			<div className="relative">
 				<img
 					src={venue.media[0]}
 					alt={venue.name}
 					className="w-full h-96 object-cover"
 				/>
-				<div className="absolute bottom-0 left-0 p-4 bg-black bg-opacity-25">
+				<div className="absolute bottom-0 left-0 p-4 bg-black bg-opacity-50">
 					<h3 className="text-2xl font-bold text-white">
 						{venue.name}
 					</h3>
 				</div>
 			</div>
-			<div className="px-4 py-3">
+			<div className="px-4 py-3 text-gray-100">
 				<p
-					className={`text-white ${
+					className={`text-gray-200 ${
 						showMore ? '' : 'truncate'
 					}`}
 					style={{ lineHeight: '1.6' }}

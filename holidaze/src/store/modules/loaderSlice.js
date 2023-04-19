@@ -12,11 +12,11 @@ const loaderSlice = createSlice({
 	},
 });
 
-export default loaderSlice.reducer;
-
-const { SET_LOADER } = loaderSlice.actions;
+const { actions, reducer } = loaderSlice;
+export default reducer;
+const { SET_LOADER } = actions;
 
 export const setLoadingState =
-	(loadingStatus) => (dispatch) => {
+	(loadingStatus) => async (dispatch) => {
 		dispatch(SET_LOADER(loadingStatus));
 	};

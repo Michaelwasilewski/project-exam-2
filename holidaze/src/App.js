@@ -1,6 +1,5 @@
 import Router from './Routes/Router';
 // import VenuesCarousel from './components/VenuesCarousel';
-// import Search from './components/Search';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 // import LoginForm from './components/LogInForm';

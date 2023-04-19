@@ -5,6 +5,7 @@ import React, {
 import 'tailwindcss/tailwind.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import HeroSection from '../HeroSection';
 
 function Venues() {
 	const [venues, setVenues] = useState([]);
@@ -21,6 +22,7 @@ function Venues() {
 
 	return (
 		<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+			<HeroSection></HeroSection>
 			<div className="bg-neutral1">
 				<div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
 					<h2 className="text-2xl font-bold tracking-tight text-neutral2">
