@@ -10,7 +10,7 @@ const Footer = () => {
 			>
 				<div className="flex flex-wrap">
 					<div className="w-full md:w-1/3 lg:w-1/4 mb-8">
-						<h2 className="text-gray-800 text-lg font-semibold mb-4">
+						<h2 className="text-white text-lg font-semibold mb-4">
 							Links
 						</h2>
 						<ul className="list-none">
@@ -49,7 +49,7 @@ const Footer = () => {
 						</ul>
 					</div>
 					<div className="w-full md:w-1/3 lg:w-1/4 mb-8">
-						<h2 className="text-gray-800 text-lg font-semibold mb-4">
+						<h2 className="text-white text-lg font-semibold mb-4">
 							Contact Us
 						</h2>
 						<ul className="list-none">
@@ -80,7 +80,7 @@ const Footer = () => {
 						</ul>
 					</div>
 					<div className="w-full md:w-1/3 lg:w-1/4 mb-8">
-						<h2 className="text-gray-800 text-lg font-semibold mb-4">
+						<h2 className="text-white text-lg font-semibold mb-4">
 							About Us
 						</h2>
 						<ul className="list-none">
@@ -111,7 +111,7 @@ const Footer = () => {
 						</ul>
 					</div>
 					<div className="w-full md:w-1/3 lg:w-1/4 mb-8">
-						<h2 className="text-gray-800 text-lg font-semibold mb-4">
+						<h2 className="text-white text-lg font-semibold mb-4">
 							Follow Us
 						</h2>
 						<ul className="list-none">

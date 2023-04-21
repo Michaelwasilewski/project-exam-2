@@ -6,13 +6,13 @@ import {
 } from 'react';
 import Logo from '../../img/holidazelogo.png';
 
-export default function Example() {
+export default function AuthForm(mode) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [name, setName] = useState('');
 	const [error, setError] = useState({});
 	const [isLoading, setIsLoading] =
-		useState(false);
+		useState(true);
 	const [venueManager, setVenueManager] =
 		useState('');
 	const [avatar, setAvatar] = useState(null);
@@ -30,62 +30,46 @@ export default function Example() {
 		setError({});
 		setIsLoading(true);
 
-		// form data
 		const data = {
-			name: name,
 			email: email,
 			password: password,
-			venueManager: venueManager === 'true', // Convert the string to boolean
-			avatar: avatarUrl,
 		};
-		if (avatar) {
-			data.append('avatar', avatar);
+
+		if (mode === 'register') {
+			data.name = name;
+			data.venueManager = venueManager === 'true';
+			data.avatar = avatarUrl;
 		}
 
+		const apiUrl =
+			mode === 'register'
+				? 'https://nf-api.onrender.com/api/v1/holidaze/auth/register'
+				: 'https://nf-api.onrender.com/api/v1/holidaze/auth/login';
+
 		try {
-			const response = await fetch(
-				'https://nf-api.onrender.com/api/v1/holidaze/auth/register',
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(data),
-				}
-			);
-
-			if (response.ok) {
-				const data = await response.json();
-				console.log(
-					'registration successful',
-					data
-				);
-				localStorage.setItem(
-					'token',
-					data.access_token
-				);
-
-				// redirect to the dashboard or other appropriate page
-			} else {
-				const errorData = await response.json();
-				console.log('error', errorData);
-				setError(
-					errorData.errors || {
-						generic:
-							'An error occurred. Please try again.',
-					}
-				);
-			}
-		} catch (error) {
-			console.error('Network error:', error);
-			setError({
-				generic:
-					'Network error. Please try again later.',
+			const response = await fetch(apiUrl, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(data),
 			});
+
+			// ... Handle the response
+		} catch (error) {
+			// ... Handle the error
 		}
 
 		setIsLoading(false);
 	};
+
+	const formTitle =
+		mode === 'register'
+			? 'Register an account'
+			: 'Sign in to your account';
+	const alternativeAction =
+		mode === 'register' ? 'Sign in' : 'Register';
+
 	return (
 		<>
 			<div className="flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8">

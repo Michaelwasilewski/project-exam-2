@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import Venues from '../components/Views/Venues';
-import LoginPage from '../components/Views/Venues';
+import AuthForm from '../components/Views/RegisterPage';
 import VenuesCarousel from '../components/VenuesCarousel';
 import RegisterPage from '../components/Views/RegisterPage';
 import CreateVenueForm from '../components/Views/CreateVenueForm';
+import VenueDetail from '../components/Views/VenueDetail';
 
 const Router = () => {
 	return (
@@ -15,8 +15,12 @@ const Router = () => {
 					element={<VenuesCarousel />}
 				/>
 				<Route
+					path="/register"
+					element={<AuthForm mode="register" />}
+				/>
+				<Route
 					path="/login"
-					element={<LoginPage />}
+					element={<AuthForm mode="login" />}
 				/>
 				<Route
 					path="/register"
@@ -25,6 +29,10 @@ const Router = () => {
 				<Route
 					path="/create-venue"
 					element={<CreateVenueForm />}
+				/>
+				<Route
+					path="/venue-detail/:id"
+					element={<VenueDetail />}
 				/>
 			</Routes>
 		</>

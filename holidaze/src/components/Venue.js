@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 const Venue = ({ venue }) => {
 	const [showMore, setShowMore] = useState(false);
 	const toggleShowMore = () =>
@@ -109,13 +109,13 @@ const Venue = ({ venue }) => {
 						</p>
 					</div>
 				</div>
-				<a
-					href={`/hotels/${venue.id}`}
+				<Link
+					to={`/venue-detail/${venue.id}`}
 					className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block"
 					style={{ fontSize: '16px' }}
 				>
 					Book now
-				</a>
+				</Link>
 			</div>
 		</div>
 	);
