@@ -1,44 +1,66 @@
 import { LockClosedIcon } from '@heroicons/react/20/solid';
+import { useEffect, useRef } from 'react';
 import {
-	useEffect,
-	useRef,
-	useState,
-} from 'react';
+	Formik,
+	Form,
+	Field,
+	ErrorMessage,
+} from 'formik';
+import * as Yup from 'yup';
 import Logo from '../../img/holidazelogo.png';
+import { Link } from 'react-router-dom';
 
-export default function AuthForm(mode) {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [name, setName] = useState('');
-	const [error, setError] = useState({});
-	const [isLoading, setIsLoading] =
-		useState(true);
-	const [venueManager, setVenueManager] =
-		useState('');
-	const [avatar, setAvatar] = useState(null);
-	const [avatarUrl, setAvatarUrl] = useState('');
+export default function AuthForm({ mode }) {
 	const fileInputRef = useRef();
 
-	useEffect(() => {
-		if (avatarUrl) {
-			setAvatar(null);
-		}
-	}, [avatarUrl]);
+	useEffect(() => {}, []);
 
-	const handleSubmit = async (event) => {
-		event.preventDefault();
-		setError({});
-		setIsLoading(true);
+	const formTitle =
+		mode === 'register'
+			? 'Register an account'
+			: 'Sign in to your account';
+	const submitButtonText =
+		mode === 'register' ? 'Register' : 'Sign In';
 
+	const initialValues = {
+		email: '',
+		password: '',
+		...(mode === 'register' && {
+			name: '',
+			venueManager: '',
+			avatarUrl: '',
+		}),
+	};
+
+	const validationSchema = Yup.object().shape({
+		email: Yup.string()
+			.email('Invalid email')
+			.required('Required'),
+		password: Yup.string()
+			.min(8, 'Minimum 8 characters')
+			.required('Required'),
+		...(mode === 'register' && {
+			name: Yup.string().required('Required'),
+			venueManager:
+				Yup.string().required('Required'),
+			avatarUrl: Yup.string().url('Invalid URL'),
+		}),
+	});
+
+	const handleSubmit = async (
+		values,
+		{ setSubmitting, setErrors }
+	) => {
 		const data = {
-			email: email,
-			password: password,
+			email: values.email,
+			password: values.password,
 		};
 
 		if (mode === 'register') {
-			data.name = name;
-			data.venueManager = venueManager === 'true';
-			data.avatar = avatarUrl;
+			data.name = values.name;
+			data.venueManager =
+				values.venueManager === 'true';
+			data.avatar = values.avatarUrl;
 		}
 
 		const apiUrl =
@@ -55,21 +77,48 @@ export default function AuthForm(mode) {
 				body: JSON.stringify(data),
 			});
 
-			// ... Handle the response
+			if (response.ok) {
+				const responseData =
+					await response.json();
+				localStorage.setItem(
+					'token',
+					responseData.token
+				);
+				if (mode === 'register') {
+					window.location.href = '/login';
+				} else {
+					window.location.href = '/';
+				}
+
+				// Handle successful response here
+				// For example, save the token or update the user state
+				console.log('Success:', responseData);
+				// Navigate to another page if needed
+			} else {
+				const errorData = await response.json();
+
+				// Handle error response here
+				// Display an error message or handle specific error cases
+				console.error('Error:', errorData);
+				setErrors({
+					generic:
+						'An error occurred. Please try again.',
+				});
+			}
 		} catch (error) {
-			// ... Handle the error
+			// Handle network or other errors here
+			console.error(
+				'Network or other error:',
+				error
+			);
+			setErrors({
+				generic:
+					'A network error occurred. Please try again.',
+			});
 		}
 
-		setIsLoading(false);
+		setSubmitting(false);
 	};
-
-	const formTitle =
-		mode === 'register'
-			? 'Register an account'
-			: 'Sign in to your account';
-	const alternativeAction =
-		mode === 'register' ? 'Sign in' : 'Register';
-
 	return (
 		<>
 			<div className="flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
@@ -81,206 +130,188 @@ export default function AuthForm(mode) {
 							alt="Your Company"
 						/>
 						<h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-							Register an account
+							{formTitle}
 						</h2>
 						<p className="mt-2 text-center text-sm text-gray-600">
 							Or{' '}
-							<a
-								href="#"
+							<Link
+								to="/login"
 								className="font-medium text-indigo-600 hover:text-indigo-500"
 							>
 								Sign in
-							</a>
+							</Link>
 						</p>
 					</div>
-					<form
-						className="mt-8 space-y-6"
+					<Formik
+						initialValues={initialValues}
+						validationSchema={validationSchema}
 						onSubmit={handleSubmit}
 					>
-						<input
-							type="hidden"
-							name="remember"
-							defaultValue="true"
-						/>
-						{error.name && (
-							<div className="text-red-600 text-sm mt-1 mb-2">
-								{error.name}
-							</div>
-						)}
-						<div className="-space-y-px rounded-md shadow-sm">
-							<div className="py-2">
-								<label
-									htmlFor="name"
-									className="sr-only"
-								>
-									Name
-								</label>
+						{({ isSubmitting }) => (
+							<Form className="mt-8 space-y-6">
 								<input
-									id="name"
-									name="name"
-									type="text"
-									autoComplete="name"
-									required
-									className="relative block w-full rounded-t-md border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-									placeholder="Name"
-									value={name}
-									onChange={(e) =>
-										setName(e.target.value)
-									}
+									type="hidden"
+									name="remember"
+									defaultValue="true"
 								/>
-							</div>
-							{error.email && (
-								<div className="text-red-600 text-sm mt-1 mb-2">
-									{error.email}
-								</div>
-							)}
-
-							<div className="py-2">
-								<label
-									htmlFor="email-address"
-									className="sr-only"
-								>
-									Email address
-								</label>
-								<input
-									id="email-address"
-									name="email"
-									type="email"
-									autoComplete="email"
-									required
-									className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-									placeholder="Email address"
-									value={email}
-									onChange={(e) =>
-										setEmail(e.target.value)
-									}
-								/>
-							</div>
-
-							<div className="py-2">
-								<label
-									htmlFor="avatar-url"
-									className="block text-sm font-medium text-gray-700"
-								>
-									Avatar URL
-								</label>
-								<input
-									id="avatar-url"
-									name="avatarUrl"
-									type="text"
-									autoComplete="off"
-									className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-									placeholder="Paste avatar URL"
-									value={avatarUrl}
-									onChange={(e) =>
-										setAvatarUrl(e.target.value)
-									}
-								/>
-							</div>
-
-							<div className="py-2">
-								<label
-									htmlFor="venue-manager"
-									className="sr-only"
-								>
-									Venue Manager
-								</label>
-								<select
-									id="venue-manager"
-									name="venueManager"
-									required
-									className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-									value={venueManager}
-									onChange={(e) =>
-										setVenueManager(
-											e.target.value
-										)
-									}
-								>
-									<option value="">
-										Select Venue Manager
-									</option>
-									<option value="true">
-										True
-									</option>
-									<option value="false">
-										False
-									</option>
-								</select>
-							</div>
-							{error.password && (
-								<div className="text-red-600 text-sm mt-1 mb-2">
-									{error.password}
-								</div>
-							)}
-							<div className="py-2">
-								<label
-									htmlFor="password"
-									className="sr-only"
-								>
-									Password
-								</label>
-								<input
-									id="password"
-									name="password"
-									type="password"
-									autoComplete="current-password"
-									required
-									className="relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-									placeholder="Password"
-									value={password}
-									onChange={(e) =>
-										setPassword(e.target.value)
-									}
-								/>
-							</div>
-						</div>
-
-						<div className="flex items-center justify-between">
-							<div className="flex items-center">
-								<input
-									id="remember-me"
-									name="remember-me"
-									type="checkbox"
-									className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-								/>
-								<label
-									htmlFor="remember-me"
-									className="ml-2 block text-sm text-gray-900"
-								>
-									Remember me
-								</label>
-							</div>
-
-							<div className="text-sm">
-								<a
-									href="#"
-									className="font-medium text-indigo-600 hover:text-indigo-500"
-								>
-									Forgot your password?
-								</a>
-							</div>
-						</div>
-						{error.generic && (
-							<div className="text-red-600 text-sm mt-1 mb-2">
-								{error.generic}
-							</div>
-						)}
-						<div>
-							<button
-								type="submit"
-								className="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-							>
-								<span className="absolute inset-y-0 left-0 flex items-center pl-3">
-									<LockClosedIcon
-										className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-										aria-hidden="true"
+								{mode === 'register' && (
+									<>
+										<div className="py-1">
+											<ErrorMessage
+												name="name"
+												component="div"
+												className="text-red-600 text-sm mt-1 mb-2"
+											/>
+											<label
+												htmlFor="name"
+												className="sr-only"
+											>
+												Name
+											</label>
+											<Field
+												id="name"
+												name="name"
+												type="text"
+												autoComplete="name"
+												required
+												className="relative block w-full rounded-t-md border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+												placeholder="Name"
+											/>
+										</div>
+										<div className="py-1">
+											<label
+												htmlFor="avatar-url"
+												className="block text-sm font-medium text-gray-700"
+											>
+												Avatar URL
+											</label>
+											<Field
+												id="avatar-url"
+												name="avatarUrl"
+												type="text"
+												autoComplete="off"
+												className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+												placeholder="Paste avatar URL"
+											/>
+										</div>
+										<div className="py-1">
+											<label
+												htmlFor="venue-manager"
+												className="sr-only"
+											>
+												Venue Manager
+											</label>
+											<Field
+												id="venue-manager"
+												name="venueManager"
+												as="select"
+												required
+												className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+											>
+												<option value="">
+													Select Venue Manager
+												</option>
+												<option value="true">
+													True
+												</option>
+												<option value="false">
+													False
+												</option>
+											</Field>
+										</div>
+									</>
+								)}
+								<div className="py-1">
+									<ErrorMessage
+										name="email"
+										component="div"
+										className="text-red-600 text-sm mt-1 mb-2"
 									/>
-								</span>
-								Register
-							</button>
-						</div>
-					</form>
+									<label
+										htmlFor="email-address"
+										className="sr-only"
+									>
+										Email address
+									</label>
+									<Field
+										id="email-address"
+										name="email"
+										type="email"
+										autoComplete="email"
+										required
+										className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+										placeholder="Email address"
+									/>
+								</div>
+								<div className="py-1">
+									<ErrorMessage
+										name="password"
+										component="div"
+										className="text-red-600 text-sm mt-1 mb-2"
+									/>
+									<label
+										htmlFor="password"
+										className="sr-only"
+									>
+										Password
+									</label>
+									<Field
+										id="password"
+										name="password"
+										type="password"
+										autoComplete="current-password"
+										required
+										className="relative block w-full rounded-b-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+										placeholder="Password"
+									/>
+								</div>{' '}
+								<div className="flex items-center justify-between">
+									<div className="flex items-center">
+										<Field
+											id="remember-me"
+											name="remember-me"
+											type="checkbox"
+											className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+										/>
+										<label
+											htmlFor="remember-me"
+											className="ml-2 block text-sm text-gray-900"
+										>
+											Remember me
+										</label>
+									</div>
+
+									<div className="text-sm">
+										<a
+											href="#"
+											className="font-medium text-indigo-600 hover:text-indigo-500"
+										>
+											Forgot your password?
+										</a>
+									</div>
+								</div>
+								<ErrorMessage
+									name="generic"
+									component="div"
+									className="text-red-600 text-sm mt-1 mb-2"
+								/>
+								<div>
+									<button
+										type="submit"
+										className="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+									>
+										<span className="absolute inset-y-0 left-0 flex items-center pl-3">
+											<LockClosedIcon
+												className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+												aria-hidden="true"
+											/>
+										</span>
+										{submitButtonText}
+									</button>
+								</div>
+							</Form>
+						)}
+					</Formik>
 				</div>
 			</div>
 		</>

@@ -12,6 +12,7 @@ import {
 	FaCar,
 	FaUtensils,
 } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const BookNowButton = () => (
 	<button className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded">
@@ -72,7 +73,9 @@ const VenueDetail = () => {
 					<h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
 						{venue.name}
 					</h1>
-					<BookNowButton />
+					<Link to="/bookings/id">
+						<BookNowButton />
+					</Link>
 				</div>
 			</div>
 			<div className="container mx-auto py-12 px-4">

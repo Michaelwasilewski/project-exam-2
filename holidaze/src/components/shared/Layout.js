@@ -5,7 +5,7 @@ import React from 'react';
 
 const Layout = ({ children }) => {
 	return (
-		<div>
+		<div className="bg-gray-800">
 			<Header />
 			{children}
 			<Footer />

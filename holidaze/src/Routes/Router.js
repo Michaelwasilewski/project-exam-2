@@ -5,7 +5,8 @@ import VenuesCarousel from '../components/VenuesCarousel';
 import RegisterPage from '../components/Views/RegisterPage';
 import CreateVenueForm from '../components/Views/CreateVenueForm';
 import VenueDetail from '../components/Views/VenueDetail';
-
+import Bookings from '../components/Views/Bookings';
+import VenuePage from '../components/Views/AllVenues';
 const Router = () => {
 	return (
 		<>
@@ -33,6 +34,14 @@ const Router = () => {
 				<Route
 					path="/venue-detail/:id"
 					element={<VenueDetail />}
+				/>
+				<Route
+					path="/bookings/:id"
+					element={<Bookings />}
+				/>
+				<Route
+					path="/venues"
+					element={<VenuePage />}
 				/>
 			</Routes>
 		</>

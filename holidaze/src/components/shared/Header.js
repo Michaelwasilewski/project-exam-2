@@ -51,7 +51,7 @@ function Header() {
 						Bookings
 					</Link>
 					<Link
-						to="/my-venues"
+						to="/venues"
 						className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-gray-700 hover:text-white hover:bg-gray-800 transition-colors duration-300 px-4 py-2 rounded-md"
 					>
 						Venues
