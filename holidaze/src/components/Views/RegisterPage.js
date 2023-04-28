@@ -35,7 +35,13 @@ export default function AuthForm({ mode }) {
 	const validationSchema = Yup.object().shape({
 		email: Yup.string()
 			.email('Invalid email')
-			.required('Required'),
+			.matches(
+				/^[a-zA-Z0-9._%+-]+@(stud\.)?noroff\.no$/,
+				'Invalid email domain. Must be @stud.noroff.no / @noroff.no'
+			)
+			.required(
+				'Required - Only @stud.noroff.no/ @noroff.no'
+			),
 		password: Yup.string()
 			.min(8, 'Minimum 8 characters')
 			.required('Required'),
@@ -81,8 +87,8 @@ export default function AuthForm({ mode }) {
 				const responseData =
 					await response.json();
 				localStorage.setItem(
-					'token',
-					responseData.token
+					'accessToken',
+					responseData.accessToken
 				);
 				if (mode === 'register') {
 					window.location.href = '/login';

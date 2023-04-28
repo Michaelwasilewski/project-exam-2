@@ -4,7 +4,7 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import Logo from '../../img/holidazelogo.png';
 import SearchBar from '../SearchBar';
 
-function Header() {
+function Header({ isLoggedIn, onLogout }) {
 	const [showMenu, setShowMenu] = useState(false);
 
 	const toggleMenu = () => {
@@ -12,12 +12,12 @@ function Header() {
 	};
 
 	return (
-		<nav className="bg-white shadow">
+		<nav className="bg-gray-200 shadow">
 			<div className="container mx-auto px-4 py-2 md:flex md:justify-between md:items-center">
 				<div className="flex justify-between items-center">
 					<Link to="/">
 						<img
-							className="h-16 md:h-10"
+							className="h-12"
 							src={Logo}
 							alt="Holidaze logo"
 						/>
@@ -56,18 +56,37 @@ function Header() {
 					>
 						Venues
 					</Link>
-					<Link
-						to="/register"
-						className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-blue-500 hover:bg-blue-600 rounded-md transition-colors duration-300 shadow-md"
-					>
-						Register
-					</Link>
-					<Link
-						to="/create-venue"
-						className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-gray-800 font-bold bg-orange-400 hover:bg-orange-500 rounded-md transition-colors duration-300 shadow-md"
-					>
-						Add Venue
-					</Link>
+					{isLoggedIn ? (
+						<>
+							<Link
+								to="/create-venue"
+								className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-orange-600 hover:bg-orange-700 rounded-md transition-colors duration-300 shadow-md"
+							>
+								Add Venue
+							</Link>
+							<button
+								onClick={onLogout}
+								className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-red-500 hover:bg-red-600 rounded-md transition-colors duration-300 shadow-md"
+							>
+								Logout
+							</button>
+						</>
+					) : (
+						<>
+							<Link
+								to="/login"
+								className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-green-700 hover:bg-green-800 rounded-md transition-colors duration-300 shadow-md"
+							>
+								Login
+							</Link>
+							<Link
+								to="/register"
+								className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-blue-800 hover:bg-blue-900 rounded-md transition-colors duration-300 shadow-md"
+							>
+								Register
+							</Link>
+						</>
+					)}
 				</div>
 			</div>
 		</nav>

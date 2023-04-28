@@ -111,7 +111,7 @@ const Venue = ({ venue }) => {
 				</div>
 				<Link
 					to={`/venue-detail/${venue.id}`}
-					className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded block"
+					className="mt-4 bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded block"
 					style={{ fontSize: '16px' }}
 				>
 					Book now
