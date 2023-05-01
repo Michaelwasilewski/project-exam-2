@@ -170,7 +170,7 @@ export default function AuthForm({ mode }) {
 											/>
 											<label
 												htmlFor="name"
-												className="sr-only"
+												className="block text-sm font-medium text-gray-700 mb-1"
 											>
 												Name
 											</label>
@@ -187,7 +187,7 @@ export default function AuthForm({ mode }) {
 										<div className="py-1">
 											<label
 												htmlFor="avatar-url"
-												className="block text-sm font-medium text-gray-700"
+												className="block text-sm font-medium text-gray-700 mb-1"
 											>
 												Avatar URL
 											</label>
@@ -203,7 +203,7 @@ export default function AuthForm({ mode }) {
 										<div className="py-1">
 											<label
 												htmlFor="venue-manager"
-												className="sr-only"
+												className="block text-sm font-medium text-gray-700 mb-1"
 											>
 												Venue Manager
 											</label>
@@ -235,7 +235,7 @@ export default function AuthForm({ mode }) {
 									/>
 									<label
 										htmlFor="email-address"
-										className="sr-only"
+										className="block text-sm font-medium text-gray-700 mb-1"
 									>
 										Email address
 									</label>
@@ -257,7 +257,7 @@ export default function AuthForm({ mode }) {
 									/>
 									<label
 										htmlFor="password"
-										className="sr-only"
+										className="block text-sm font-medium text-gray-700 mb-1"
 									>
 										Password
 									</label>

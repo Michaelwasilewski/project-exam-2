@@ -11,6 +11,9 @@ import {
 	FaDog,
 	FaCar,
 	FaUtensils,
+	FaDollarSign,
+	FaUsers,
+	FaStar,
 } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
@@ -19,7 +22,13 @@ const BookNowButton = () => (
 		Book now
 	</button>
 );
-
+const BackToHomepageButton = () => (
+	<Link to="/">
+		<button className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded">
+			Back to Homepage
+		</button>
+	</Link>
+);
 const VenueDetail = () => {
 	const { id } = useParams();
 	const [venue, setVenue] = useState(null);
@@ -70,21 +79,23 @@ const VenueDetail = () => {
 			>
 				<div className="absolute inset-0 bg-black opacity-40"></div>
 				<div className="absolute inset-0 flex flex-col items-center justify-center">
-					<h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+					<h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
 						{venue.name}
 					</h1>
-					<Link to="/bookings/id">
-						<BookNowButton />
-					</Link>
+					<div className="space-x-4">
+						<Link to={`/bookings/${id}`}>
+							<BookNowButton />
+						</Link>
+					</div>
 				</div>
 			</div>
 			<div className="container mx-auto py-12 px-4">
 				<div className="bg-gray-800 rounded-lg shadow-md flex flex-col md:flex-row items-start md:items-center justify-center p-4">
 					<div className="w-full md:w-1/2 p-4">
-						<h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+						<h2 className="text-2xl md:text-3xl font-bold text-white mb-4 tracking-wide">
 							{venue.name}
 						</h2>
-						<p className="text-sm md:text-base text-gray-300 mb-4">
+						<p className="text-sm md:text-base text-gray-300 mb-4 leading-relaxed">
 							{showMore
 								? venue.description
 								: truncateDescription(
@@ -99,72 +110,112 @@ const VenueDetail = () => {
 									: 'Show More'}
 							</button>
 						</p>
-						<p className="text-lg font-semibold text-white mb-2">
-							Price:{' '}
-							<span className="text-green-500">
-								${venue.price}
-							</span>
-						</p>
-						<p className="text-lg font-semibold text-white mb-4">
-							Max Guests: {venue.maxGuests}
-						</p>
-						<ul className="text-sm md:text-base text-gray-100">
-							<li className="flex items-center">
-								<FaWifi className="mr-2" />
-								WiFi:{' '}
-								{venue.meta.wifi ? (
-									<span className="text-green-600 ml-1 font-semibold">
-										Yes
+						<div className="bg-gray-700 rounded-lg p-4 mb-4">
+							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+								<p className="text-xl md:text-2xl font-bold text-white tracking-wide">
+									Price:{' '}
+									<span className="text-green-500 font-bold py-1 px-2 rounded-full">
+										${venue.price}
 									</span>
-								) : (
-									<span className="text-red-600 ml-1">
-										No
-									</span>
-								)}
-							</li>
-							<li className="flex items-center">
-								<FaCar className="mr-2" />
-								Parking:{' '}
-								{venue.meta.parking ? (
-									<span className="text-green-600 ml-1 font-semibold">
-										Yes
-									</span>
-								) : (
-									<span className="text-red-600 ml-1">
-										No
-									</span>
-								)}
-							</li>
-							<li className="flex items-center">
-								<FaUtensils className="mr-2" />
-								Breakfast:{' '}
-								{venue.meta.breakfast ? (
-									<span className="text-green-600 ml-1 font-semibold">
-										Yes
-									</span>
-								) : (
-									<span className="text-red-600 ml-1">
-										No
-									</span>
-								)}
-							</li>
-							<li className="flex items-center">
-								<FaDog className="mr-2" />
-								Pets:{' '}
-								{venue.meta.pets ? (
-									<span className="text-green-600 ml-1 font-semibold">
-										Yes
-									</span>
-								) : (
-									<span className="text-red-600 ml-1">
-										No
-									</span>
-								)}
-							</li>
+								</p>
+								<p className="text-xl md:text-2xl font-bold text-white tracking-wide">
+									<FaUsers className="inline-block mr-2 text-indigo-500" />
+									Max Guests: {venue.maxGuests}
+								</p>
+								<p className="text-xl md:text-2xl font-bold text-white tracking-wide">
+									Rating:{' '}
+									{venue.rating.toFixed(1)}
+									<FaStar className="inline-block ml-2 text-yellow-500" />
+								</p>
+							</div>
+						</div>
+						{venue.location.address ||
+						venue.location.city ||
+						venue.location.zip ||
+						venue.location.country ? (
+							<div className="bg-gray-700 rounded-lg p-4 mb-4">
+								<h3 className="text-xl md:text-2xl font-semibold text-white mb-2 tracking-wide">
+									Location
+								</h3>
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+									{venue.location.address && (
+										<p className="text-base md:text-lg text-gray-300 leading-relaxed">
+											Address:{' '}
+											{venue.location.address}
+										</p>
+									)}
+									{venue.location.city && (
+										<p className="text-base md:text-lg text-gray-300 leading-relaxed">
+											City: {venue.location.city}
+										</p>
+									)}
+									{venue.location.zip && (
+										<p className="text-base md:text-lg text-gray-300 leading-relaxed">
+											Zip: {venue.location.zip}
+										</p>
+									)}
+									{venue.location.country && (
+										<p className="text-base md:text-lg text-gray-300 leading-relaxed">
+											Country:{' '}
+											{venue.location.country}
+										</p>
+									)}
+								</div>
+							</div>
+						) : null}
+
+						<ul className="grid grid-cols-2 gap-4 text-sm md:text-base text-gray-100">
+							{[
+								{
+									icon: (
+										<FaWifi className="mr-2" />
+									),
+									label: 'WiFi',
+									value: venue.meta.wifi,
+								},
+								{
+									icon: (
+										<FaCar className="mr-2" />
+									),
+									label: 'Parking',
+									value: venue.meta.parking,
+								},
+								{
+									icon: (
+										<FaUtensils className="mr-2" />
+									),
+									label: 'Breakfast',
+									value: venue.meta.breakfast,
+								},
+								{
+									icon: (
+										<FaDog className="mr-2" />
+									),
+									label: 'Pets',
+									value: venue.meta.pets,
+								},
+							].map(({ icon, label, value }) => (
+								<li
+									key={label}
+									className="flex items-center bg-gray-700 p-2 rounded-lg"
+								>
+									{icon}
+									{label}:{' '}
+									{value ? (
+										<span className="text-green-600 ml-1 font-semibold">
+											Yes
+										</span>
+									) : (
+										<span className="text-red-600 ml-1">
+											No
+										</span>
+									)}
+								</li>
+							))}
 						</ul>
 					</div>
 					<div className="w-full md:w-1/2 p-4">
-						<div className="w-full h-84 md:h-64 overflow-hidden rounded">
+						<div className="w-full h-full md:h-auto overflow-hidden rounded">
 							<Carousel
 								showThumbs={false}
 								infiniteLoop
@@ -178,7 +229,7 @@ const VenueDetail = () => {
 											<img
 												src={image}
 												alt={`${venue.name}-${index}`}
-												className="object-cover h-48 md:h-64 w-full rounded"
+												className="object-cover h-full md:h-64 w-full rounded"
 											/>
 										</div>
 									)
@@ -190,6 +241,7 @@ const VenueDetail = () => {
 				<div className="mt-8 flex justify-center">
 					<BookNowButton />
 				</div>
+				<BackToHomepageButton />
 			</div>
 		</div>
 	);

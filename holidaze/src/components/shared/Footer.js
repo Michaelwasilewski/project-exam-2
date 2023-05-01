@@ -4,11 +4,8 @@ import { Link } from 'react-router-dom';
 const Footer = () => {
 	return (
 		<footer className="bg-gray-800 shadow-lg">
-			<div
-				className="mx-auto px-4 py-8"
-				style={{ width: '80%' }}
-			>
-				<div className="flex flex-wrap">
+			<div className="container mx-auto px-4 py-8">
+				<div className="flex flex-wrap -mx-2">
 					<div className="w-full md:w-1/3 lg:w-1/4 mb-8">
 						<h2 className="text-white text-lg font-semibold mb-4">
 							Links

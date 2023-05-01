@@ -7,6 +7,7 @@ import CreateVenueForm from '../components/Views/CreateVenueForm';
 import VenueDetail from '../components/Views/VenueDetail';
 import Bookings from '../components/Views/Bookings';
 import VenuePage from '../components/Views/AllVenues';
+import ProfilePage from '../components/Views/profilePage';
 const Router = () => {
 	return (
 		<>
@@ -42,6 +43,10 @@ const Router = () => {
 				<Route
 					path="/venues"
 					element={<VenuePage />}
+				/>
+				<Route
+					path="/profile"
+					element={<ProfilePage />}
 				/>
 			</Routes>
 		</>

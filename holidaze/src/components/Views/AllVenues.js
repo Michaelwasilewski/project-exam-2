@@ -3,38 +3,56 @@ import React, {
 	useEffect,
 } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import {
+	useSelector,
+	useDispatch,
+} from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import {
+	fetchVenues,
+	fetchTotalVenues,
+} from '../../store/modules/venueSlice';
 
 const VenuePage = () => {
-	const [venues, setVenues] = useState([]);
+	const dispatch = useDispatch();
 	const [searchTerm, setSearchTerm] =
 		useState('');
+	const [suggestions, setSuggestions] = useState(
+		[]
+	);
 	const [page, setPage] = useState(1);
 	const [venuesPerPage, setVenuesPerPage] =
-		useState(8);
+		useState(12);
 	const [filteredVenues, setFilteredVenues] =
 		useState([]);
-	const [isLoggedIn, setIsLoggedIn] =
-		useState(false);
 	const [sortOption, setSortOption] = useState(
 		'highest-rating'
 	);
+	const venues = useSelector(
+		(state) => state.venues
+	);
+	const isLoggedIn = useSelector(
+		(state) => state.auth.isLoggedIn
+	);
+
 	const totalPages = () => {
+		if (!Array.isArray(filteredVenues)) return 0;
 		return Math.ceil(
 			filteredVenues.length / venuesPerPage
 		);
 	};
+
 	const paginatedVenues = () => {
+		if (!Array.isArray(filteredVenues)) return [];
 		const startIndex = (page - 1) * venuesPerPage;
 		const endIndex = startIndex + venuesPerPage;
-		return sortedVenues.slice(
+		return filteredVenues.slice(
 			startIndex,
 			endIndex
 		);
 	};
-	const featuredVenues = () => {
-		return sortedVenues.slice(0, 3);
-	};
+
 	const nextPage = () => {
 		if (page < totalPages()) {
 			setPage(page + 1);
@@ -46,11 +64,13 @@ const VenuePage = () => {
 			setPage(page - 1);
 		}
 	};
+
 	const handleSortChange = (event) => {
 		setSortOption(event.target.value);
 	};
-	const getSortedVenues = () => {
-		return [...venues].sort((a, b) => {
+
+	const sortedVenues = useSelector((state) =>
+		[...state.venues?.venues]?.sort((a, b) => {
 			switch (sortOption) {
 				case 'highest-rating':
 					return b.rating - a.rating;
@@ -63,130 +83,116 @@ const VenuePage = () => {
 				default:
 					return 0;
 			}
-		});
-	};
+		})
+	);
+	const totalVenues = useSelector(
+		(state) => state.venues.totalVenues
+	);
+
 	useEffect(() => {
-		axios
-			.get(
-				'https://nf-api.onrender.com/api/v1/holidaze/venues'
-			)
-			.then((response) => {
-				setVenues(response.data);
-				setFilteredVenues(response.data);
+		dispatch(fetchVenues())
+			.then(() => {
+				dispatch(fetchTotalVenues());
 			})
 			.catch((error) => {
-				console.log(error);
+				console.error(
+					'Failed to fetch venues:',
+					error
+				);
 			});
-	}, []);
+	}, [dispatch]);
+	useEffect(() => {
+		setFilteredVenues(venues.venues);
+	}, [venues]);
 
 	const handleSearch = (event) => {
-		setSearchTerm(event.target.value);
-		const filtered = venues.filter((venue) =>
-			venue.name
-				.toLowerCase()
-				.includes(
-					event.target.value.toLowerCase()
-				)
-		);
+		const searchTerm = event.target.value;
+		setSearchTerm(searchTerm);
+
+		const filtered =
+			sortedVenues &&
+			sortedVenues.filter((venue) =>
+				venue.name
+					.toLowerCase()
+					.includes(searchTerm.toLowerCase())
+			);
+
+		if (searchTerm.length >= 3) {
+			setSuggestions(filtered);
+		} else {
+			setSuggestions([]);
+		}
 		setFilteredVenues(filtered);
 	};
-
-	const sortedVenues = getSortedVenues();
-
+	console.log(totalVenues);
 	return (
 		<div>
-			<div className="hero-section bg-gradient-to-r from-indigo-900 via-indigo-800 to-purple-800 text-white md:min-h-screen flex items-center">
-				<div className="container mx-auto text-center px-4">
-					<h1 className="text-4xl sm:text-5xl font-bold mb-4">
-						Find the perfect venue for your
-						holiday
-					</h1>
-					<p className="text-base sm:text-lg mb-8">
-						Search for the best venues around the
-						world and book your dream vacation.
-					</p>
-					<input
-						type="text"
-						className="border-0 focus:outline-none focus:ring-2 focus:ring-purple-500 p-2 rounded-lg w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 mb-4 bg-white text-gray-900"
-						placeholder="Search for a venue"
-						value={searchTerm}
-						onChange={handleSearch}
-					/>
-					<p className="text-sm">
-						We have over {sortedVenues.length}{' '}
-						venues to choose from!
-					</p>
-					<Link
-						to={
-							isLoggedIn
-								? '/create-venue'
-								: '/register'
-						}
-						className="mt-4 bg-green-500 hover:bg-green-700 text-white font-semibold text-lg py-3 px-6 rounded-lg transition duration-200 ease-in inline-block"
-					>
-						Create a Venue
-					</Link>
+			<div className="hero-section bg-gradient-to-r from-indigo-900 via-indigo-800 to-purple-800 text-white min-h-fit">
+				<div className="container mx-auto h-full flex items-center justify-center">
+					<div className="w-full px-4 text-center pt-32">
+						<h1 className="text-4xl sm:text-5xl font-bold mb-4">
+							Find the perfect venue for your
+							holiday
+						</h1>
+						<p className="text-base sm:text-lg mb-8">
+							Search for the best venues around
+							the world and book your dream
+							vacation.
+						</p>
+						<p className="text-sm">
+							We have over {sortedVenues.length}{' '}
+							venues to choose from!
+						</p>
+						<div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 relative mx-auto">
+							<div className="flex items-center bg-white rounded-lg">
+								<input
+									type="text"
+									className="border-0 focus:outline-none focus:ring-2 focus:ring-purple-500 p-2 rounded-lg w-full bg-transparent text-gray-900 pl-10"
+									placeholder="Search for a venue"
+									value={searchTerm}
+									onChange={handleSearch}
+								/>
+								<div className="absolute left-3">
+									<FontAwesomeIcon
+										icon={faSearch}
+										className="text-gray-400"
+									/>
+								</div>
+							</div>
+
+							{suggestions.length > 0 && (
+								<div className="absolute left-0 right-0 bg-white shadow-md rounded-lg w-full mt-2 z-10">
+									<ul className="list-none p-0 m-0">
+										{suggestions.map(
+											(suggestion, index) => (
+												<Link
+													key={index}
+													to={`/venue-detail/${suggestion.id}`}
+													className="block px-4 py-2 border-b-2 text-gray-800 hover:bg-gray-200"
+												>
+													{suggestion.name}
+												</Link>
+											)
+										)}
+									</ul>
+								</div>
+							)}
+						</div>
+						<Link
+							to={
+								isLoggedIn
+									? '/create-venue'
+									: '/register'
+							}
+							className="mt-4 mb-4 bg-green-500 hover:bg-green-700 text-white font-semibold text-xl py-3 px-6 rounded-lg transition duration-300 ease-in-out inline-block shadow-md hover:shadow-lg transform hover:-translate-y-1"
+						>
+							Create a Venue
+						</Link>
+					</div>
 				</div>
 			</div>
 			<div className="container mx-auto my-4">
 				<div className="container mx-auto my-4 px-4">
-					{/* Featured venues section */}
-					<div className="text-center py-8">
-						<h2 className="text-3xl font-bold text-gray-900 mb-4">
-							Featured Venues
-						</h2>
-						<p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
-							Explore our top-rated venues,
-							hand-picked for you.
-						</p>
-					</div>
-					<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
-						{featuredVenues().map((venue) => (
-							<div
-								key={venue.id}
-								className="venue-card bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 rounded-lg shadow-md flex flex-col justify-between h-96 p-4"
-							>
-								<div
-									className="w-full h-48 bg-cover bg-center rounded-lg mb-4"
-									style={{
-										backgroundImage: `url(${venue.media[0]})`,
-									}}
-								></div>
-								<div className="flex-grow">
-									<h2 className="text-lg md:text-xl font-medium text-white mb-2">
-										{venue.name}
-									</h2>
-									<div className="flex items-center text-gray-500 text-sm mb-2">
-										<svg
-											className="fill-current text-yellow-500 w-4 h-4 mr-1"
-											viewBox="0 0 24 24"
-										>
-											<path
-												d="M20.66 9.593a1.003 1.003 0 00-.854-.566l-5.961-.863L12.945.785c-.305-.645-1.335-.645-1.64 0L9.254 7.164l-5.961.863a1.003 1.003 0 00-.554 1.705l4.313 4.203-1.019 5.938c-.074.43.387.767.798.566L12 17.563l5.346 2.802c.23.121.51.121.74 0l1.66-.873c.41-.201.872-.867.798-1.297l-1.019-5.938 4.313-4.203c.219-.21.305-.509.219-.791z"
-												fillRule="evenodd"
-											/>
-										</svg>
-										<span className="text-white">
-											{venue.rating.toFixed(1)}
-										</span>
-									</div>
-									<p className="text-gray-400 text-sm mb-4">
-										{venue.description.substring(
-											0,
-											100
-										)}
-										...
-									</p>
-								</div>
-								<Link
-									to={`/venue-detail/${venue.id}`}
-									className="mt-4 bg-blue-500 hover:bg-blue-700 text-white text-center font-bold py-2 px-4 rounded block"
-								>
-									View details
-								</Link>
-							</div>
-						))}
-					</div>
 					<div className="text-center py-8 bg-gradient-to-b from-gray-100 to-transparent">
 						<h2 className="text-3xl font-bold text-gray-900 mb-4">
 							Venues
@@ -223,7 +229,7 @@ const VenuePage = () => {
 							</option>
 						</select>
 					</div>
-					<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+					<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
 						{paginatedVenues().map((venue) => (
 							<div
 								key={venue.id}
@@ -233,6 +239,7 @@ const VenuePage = () => {
 									className="w-full h-48 bg-cover bg-center rounded-lg mb-4"
 									style={{
 										backgroundImage: `url(${venue.media[0]})`,
+										objectFit: 'cover',
 									}}
 								></div>
 								<div className="flex-grow">

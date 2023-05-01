@@ -1,84 +1,91 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { setLoadingState } from './loaderSlice';
+import {
+	createSlice,
+	createAction,
+} from '@reduxjs/toolkit';
+
 const venueSlice = createSlice({
-	name: 'products',
+	name: 'venues',
 	initialState: {
-		products: [],
-		singleProduct: null,
-		isError: false,
-		filteredProducts: [],
+		venues: [],
+		singleVenue: null,
+		cheapestHouses: [],
+		topRatedHouses: [],
+		totalVenues: 0,
 	},
 	reducers: {
-		SET_PRODUCTS: (state, action) => {
-			state.products = action.payload;
+		setVenues: (state, action) => {
+			state.venues = action.payload;
+			const lowestPrice = Math.min(
+				...state.venues.map((v) => v.price)
+			);
+			state.cheapestHouses = state.venues.filter(
+				(v) => v.price === lowestPrice
+			);
+			const highestRating = Math.max(
+				...state.venues.map((v) => v.rating)
+			);
+			state.topRatedHouses = state.venues.filter(
+				(v) => v.rating === highestRating
+			);
 		},
-		SET_SINGLE_PRODUCT: (state, action) => {
-			state.singleProduct = action.payload;
+		setSingleVenue: (state, action) => {
+			state.singleVenue = action.payload;
 		},
-		SET_ERROR: (state, action) => {
-			state.isError = action.payload;
-		},
-		SET_FILTERED_PRODUCTS: (state, action) => {
-			state.filteredProducts = action.payload;
+		setTotalVenues: (state, action) => {
+			state.totalVenues = action.payload;
 		},
 	},
 });
 
 export default venueSlice.reducer;
 
-const { SET_PRODUCTS } = venueSlice.actions;
-const { SET_SINGLE_PRODUCT } = venueSlice.actions;
-const { SET_ERROR } = venueSlice.actions;
-const { SET_FILTERED_PRODUCTS } =
-	venueSlice.actions;
+export const {
+	setVenues,
+	setSingleVenue,
+	setTotalVenues,
+} = venueSlice.actions;
 
-export const FetchVenues =
+export const fetchVenues =
 	() => async (dispatch) => {
-		dispatch(setLoadingState(true));
 		try {
 			const response = await fetch(
 				'https://nf-api.onrender.com/api/v1/holidaze/venues'
 			);
 			const data = await response.json();
-			dispatch(SET_PRODUCTS(data));
-			dispatch(setLoadingState(false));
+			dispatch(setVenues(data));
+			return data; // Add this line
 		} catch (e) {
-			return console.error(e.message);
+			console.error('Failed to fetch venues', e);
 		}
 	};
 
-export const FetchSingleVenue =
+export const fetchSingleVenue =
 	(id) => async (dispatch) => {
-		dispatch(setLoadingState(true));
-		let response;
 		try {
-			response = await fetch(
+			const response = await fetch(
 				`https://nf-api.onrender.com/api/v1/holidaze/venues/${id}`
 			);
-			const singleProductData =
-				await response.json();
-			dispatch(
-				SET_SINGLE_PRODUCT(singleProductData)
-			);
-			dispatch(setLoadingState(false));
+			const data = await response.json();
+			dispatch(setSingleVenue(data));
 		} catch (e) {
-			return console.error(e.message);
-		}
-		if (response.ok) {
-			dispatch(handleResponseError(false));
-		} else {
-			dispatch(handleResponseError(true));
+			console.error(
+				`Failed to fetch venue ${id}`,
+				e
+			);
 		}
 	};
-
-export const handleResponseError =
-	(response) => (dispatch) => {
-		dispatch(SET_ERROR(response));
-	};
-
-export const handleFilteredProducts =
-	(filteredProducts) => (dispatch) => {
-		dispatch(
-			SET_FILTERED_PRODUCTS(filteredProducts)
-		);
+export const fetchTotalVenues =
+	() => async (dispatch) => {
+		try {
+			const response = await fetch(
+				'https://nf-api.onrender.com/api/v1/holidaze/venues'
+			);
+			const data = await response.json();
+			dispatch(setTotalVenues(data.totalVenues));
+		} catch (e) {
+			console.error(
+				'Failed to fetch total venues',
+				e
+			);
+		}
 	};
