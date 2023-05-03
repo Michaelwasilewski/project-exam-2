@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import Logo from '../../img/holidazelogo.png';
-import SearchBar from '../SearchBar';
 
 function Header({ isLoggedIn, onLogout }) {
 	const [showMenu, setShowMenu] = useState(false);
@@ -58,6 +57,12 @@ function Header({ isLoggedIn, onLogout }) {
 					</Link>
 					{isLoggedIn ? (
 						<>
+							<Link
+								to={`/profile`}
+								className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-gray-600 hover:text-white hover:bg-gray-800 transition-colors duration-300 px-4 py-2 rounded-md"
+							>
+								Profile
+							</Link>
 							<Link
 								to="/create-venue"
 								className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-orange-600 hover:bg-orange-700 rounded-md transition-colors duration-300 shadow-md"

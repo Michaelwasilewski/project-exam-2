@@ -1,6 +1,10 @@
 import { LockClosedIcon } from '@heroicons/react/20/solid';
 import { useEffect, useRef } from 'react';
 import {
+	useSelector,
+	useDispatch,
+} from 'react-redux';
+import {
 	Formik,
 	Form,
 	Field,
@@ -9,15 +13,28 @@ import {
 import * as Yup from 'yup';
 import Logo from '../../img/holidazelogo.png';
 import { Link } from 'react-router-dom';
+import {
+	setAccessToken,
+	setUser,
+	setIsLoggedIn,
+} from '../../store/modules/authSlice';
 
 export default function AuthForm({ mode }) {
 	const fileInputRef = useRef();
-
+	const dispatch = useDispatch();
 	useEffect(() => {}, []);
 
+	const isLoggedIn = useSelector(
+		(state) => state.auth.isLoggedIn
+	);
+	const user = useSelector(
+		(state) => state.auth.user
+	);
 	const formTitle =
 		mode === 'register'
 			? 'Register an account'
+			: isLoggedIn && user && user.name
+			? `Welcome back, ${user.name}`
 			: 'Sign in to your account';
 	const submitButtonText =
 		mode === 'register' ? 'Register' : 'Sign In';
@@ -61,12 +78,16 @@ export default function AuthForm({ mode }) {
 			email: values.email,
 			password: values.password,
 		};
-
+		console.log(data);
 		if (mode === 'register') {
 			data.name = values.name;
 			data.venueManager =
 				values.venueManager === 'true';
 			data.avatar = values.avatarUrl;
+		}
+
+		if (values.name) {
+			data.name = values.name;
 		}
 
 		const apiUrl =
@@ -86,25 +107,35 @@ export default function AuthForm({ mode }) {
 			if (response.ok) {
 				const responseData =
 					await response.json();
+				console.log(responseData);
 				localStorage.setItem(
 					'accessToken',
 					responseData.accessToken
 				);
+				localStorage.setItem(
+					'user',
+					JSON.stringify({
+						name: responseData.name,
+						email: responseData.email,
+						avatar: responseData.avatar,
+						venueManager:
+							responseData.venueManager,
+					})
+				);
+				dispatch(
+					setAccessToken(responseData.accessToken)
+				);
+				dispatch(setUser(responseData.name));
+				dispatch(setIsLoggedIn(true));
 				if (mode === 'register') {
 					window.location.href = '/login';
 				} else {
 					window.location.href = '/';
 				}
-
-				// Handle successful response here
-				// For example, save the token or update the user state
 				console.log('Success:', responseData);
-				// Navigate to another page if needed
 			} else {
 				const errorData = await response.json();
 
-				// Handle error response here
-				// Display an error message or handle specific error cases
 				console.error('Error:', errorData);
 				setErrors({
 					generic:
@@ -112,7 +143,6 @@ export default function AuthForm({ mode }) {
 				});
 			}
 		} catch (error) {
-			// Handle network or other errors here
 			console.error(
 				'Network or other error:',
 				error
