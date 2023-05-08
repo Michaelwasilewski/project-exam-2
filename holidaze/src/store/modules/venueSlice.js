@@ -1,7 +1,4 @@
-import {
-	createSlice,
-	createAction,
-} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const venueSlice = createSlice({
 	name: 'venues',
@@ -11,6 +8,7 @@ const venueSlice = createSlice({
 		cheapestHouses: [],
 		topRatedHouses: [],
 		totalVenues: 0,
+		createVenue: null,
 	},
 	reducers: {
 		setVenues: (state, action) => {
@@ -34,6 +32,12 @@ const venueSlice = createSlice({
 		setTotalVenues: (state, action) => {
 			state.totalVenues = action.payload;
 		},
+		SET_CREATE_VENUE: (state, action) => {
+			state.createVenue = action.payload;
+		},
+		SET_DELETE_VENUE: (state, action) => {
+			state.createVenue = action.payload;
+		},
 	},
 });
 
@@ -43,8 +47,12 @@ export const {
 	setVenues,
 	setSingleVenue,
 	setTotalVenues,
+	SET_DELETE_VENUE,
+	SET_CREATE_VENUE,
 } = venueSlice.actions;
-
+const accessToken = localStorage.getItem(
+	'accessToken'
+);
 export const fetchVenues =
 	() => async (dispatch) => {
 		try {
@@ -89,3 +97,40 @@ export const fetchTotalVenues =
 			);
 		}
 	};
+export const newVenue =
+	(venueData) => async (dispatch) => {
+		try {
+			const response = await fetch(
+				'https://nf-api.onrender.com/api/v1/holidaze/venues',
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${accessToken}`,
+					},
+					body: JSON.stringify(venueData),
+				}
+			);
+			const data = await response.json();
+			console.log(data);
+			dispatch(SET_CREATE_VENUE(data));
+			// window.location.href = '/';
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
+export const deleteVenue = (id) => {
+	fetch(
+		`https://nf-api.onrender.com/api/v1/holidaze/venues/${id}`,
+		{
+			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${accessToken}`,
+			},
+		}
+	).then(() => {
+		window.location.href = '/profile';
+	});
+};

@@ -11,12 +11,12 @@ function Header({ isLoggedIn, onLogout }) {
 	};
 
 	return (
-		<nav className="bg-gray-300 shadow">
+		<nav className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 shadow">
 			<div className="container mx-auto px-4 py-2 md:flex md:justify-between md:items-center">
 				<div className="flex justify-between items-center">
 					<Link to="/">
 						<img
-							className="h-12"
+							className="w-auto h-auto max-w-full max-h-12 md:max-w-none md:max-h-12"
 							src={Logo}
 							alt="Holidaze logo"
 						/>
@@ -26,9 +26,9 @@ function Header({ isLoggedIn, onLogout }) {
 						className="md:hidden focus:outline-none"
 					>
 						{showMenu ? (
-							<FaTimes className="w-6 h-6 text-gray-200" />
+							<FaTimes className="w-6 h-6 text-gray-600" />
 						) : (
-							<FaBars className="w-6 h-6 text-gray-200" />
+							<FaBars className="w-6 h-6 text-gray-600" />
 						)}
 					</button>
 				</div>
@@ -39,19 +39,19 @@ function Header({ isLoggedIn, onLogout }) {
 				>
 					<Link
 						to="/browse-destinations"
-						className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-gray-600 hover:text-white hover:bg-gray-800 transition-colors duration-300 px-4 py-2 rounded-md"
+						className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-white hover:text-gray-800 hover:bg-white transition-colors duration-300 px-4 py-2 rounded-md"
 					>
 						Destinations
 					</Link>
 					<Link
 						to="/my-bookings"
-						className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-gray-600 hover:text-white hover:bg-gray-800 transition-colors duration-300 px-4 py-2 rounded-md"
+						className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-white hover:text-gray-800 hover:bg-white transition-colors duration-300 px-4 py-2 rounded-md"
 					>
 						Bookings
 					</Link>
 					<Link
 						to="/venues"
-						className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-gray-600 hover:text-white hover:bg-gray-800 transition-colors duration-300 px-4 py-2 rounded-md"
+						className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-white hover:text-gray-800 hover:bg-white transition-colors duration-300 px-4 py-2 rounded-md"
 					>
 						Venues
 					</Link>
@@ -59,22 +59,23 @@ function Header({ isLoggedIn, onLogout }) {
 						<>
 							<Link
 								to={`/profile`}
-								className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-gray-600 hover:text-white hover:bg-gray-800 transition-colors duration-300 px-4 py-2 rounded-md"
+								className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-white hover:text-gray-800 hover:bg-white transition-colors duration-300 px-4 py-2 rounded-md"
 							>
 								Profile
 							</Link>
 							<Link
 								to="/create-venue"
-								className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-orange-600 hover:bg-orange-700 rounded-md transition-colors duration-300 shadow-md"
+								className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-blue-600 hover:bg-blue-700 rounded-md transition-colors duration-300 shadow-md"
 							>
 								Add Venue
 							</Link>
-							<button
+							<Link
+								to="/"
 								onClick={onLogout}
 								className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-red-500 hover:bg-red-600 rounded-md transition-colors duration-300 shadow-md"
 							>
 								Logout
-							</button>
+							</Link>
 						</>
 					) : (
 						<>
@@ -86,7 +87,7 @@ function Header({ isLoggedIn, onLogout }) {
 							</Link>
 							<Link
 								to="/register"
-								className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-blue-800 hover:bg-blue-900 rounded-md transition-colors duration-300 shadow-md"
+								className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-blue-600 hover:bg-blue-700 rounded-md transition-colors duration-300 shadow-md"
 							>
 								Register
 							</Link>
