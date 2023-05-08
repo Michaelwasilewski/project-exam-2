@@ -38,10 +38,10 @@ function Header({ isLoggedIn, onLogout }) {
 					} md:flex md:items-center`}
 				>
 					<Link
-						to="/browse-destinations"
+						to="/venues"
 						className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-white hover:text-gray-800 hover:bg-white transition-colors duration-300 px-4 py-2 rounded-md"
 					>
-						Destinations
+						Venues
 					</Link>
 					<Link
 						to="/my-bookings"
@@ -49,12 +49,7 @@ function Header({ isLoggedIn, onLogout }) {
 					>
 						Bookings
 					</Link>
-					<Link
-						to="/venues"
-						className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-white hover:text-gray-800 hover:bg-white transition-colors duration-300 px-4 py-2 rounded-md"
-					>
-						Venues
-					</Link>
+
 					{isLoggedIn ? (
 						<>
 							<Link
