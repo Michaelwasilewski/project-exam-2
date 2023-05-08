@@ -11,7 +11,6 @@ import {
 	FaDog,
 	FaCar,
 	FaUtensils,
-	FaDollarSign,
 	FaUsers,
 	FaStar,
 } from 'react-icons/fa';
