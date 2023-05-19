@@ -38,6 +38,9 @@ const venueSlice = createSlice({
 		SET_DELETE_VENUE: (state, action) => {
 			state.createVenue = action.payload;
 		},
+		SET_UPDATE_VENUE: (state, action) => {
+			state.createVenue = action.payload;
+		},
 	},
 });
 
@@ -49,6 +52,7 @@ export const {
 	setTotalVenues,
 	SET_DELETE_VENUE,
 	SET_CREATE_VENUE,
+	SET_UPDATE_VENUE,
 } = venueSlice.actions;
 const accessToken = localStorage.getItem(
 	'accessToken'
@@ -134,3 +138,26 @@ export const deleteVenue = (id) => {
 		window.location.href = '/profile';
 	});
 };
+
+export const updateVenue =
+	(id, venueData) => async (dispatch) => {
+		try {
+			const response = await fetch(
+				`https://nf-api.onrender.com/api/v1/holidaze/venues/${id}`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${accessToken}`,
+					},
+					body: JSON.stringify(venueData),
+				}
+			);
+			const data = await response.json();
+			console.log(data);
+			dispatch(SET_UPDATE_VENUE(data));
+			window.location.href = '/profile';
+		} catch (e) {
+			console.log(e);
+		}
+	};

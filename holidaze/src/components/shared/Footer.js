@@ -51,28 +51,28 @@ const Footer = () => {
 						</h2>
 						<ul className="list-none">
 							<li className="mb-2">
-								<a
-									href="#"
+								<Link
+									to="#"
 									className="text-gray-400 hover:text-gray-200 block font-medium"
 								>
 									Email
-								</a>
+								</Link>
 							</li>
 							<li className="mb-2">
-								<a
-									href="#"
+								<Link
+									to="#"
 									className="text-gray-400 hover:text-gray-200 block font-medium"
 								>
 									Phone
-								</a>
+								</Link>
 							</li>
 							<li className="mb-2">
-								<a
-									href="#"
+								<Link
+									to="#"
 									className="text-gray-400 hover:text-gray-200 block font-medium"
 								>
 									Address
-								</a>
+								</Link>
 							</li>
 						</ul>
 					</div>
@@ -82,28 +82,28 @@ const Footer = () => {
 						</h2>
 						<ul className="list-none">
 							<li className="mb-2">
-								<a
-									href="#"
+								<Link
+									to="#"
 									className="text-gray-400 hover:text-gray-200 block font-medium"
 								>
 									Company
-								</a>
+								</Link>
 							</li>
 							<li className="mb-2">
-								<a
-									href="#"
+								<Link
+									to="#"
 									className="text-gray-400 hover:text-gray-200 block font-medium"
 								>
 									Team
-								</a>
+								</Link>
 							</li>
 							<li className="mb-2">
-								<a
-									href="#"
+								<Link
+									to="#"
 									className="text-gray-400 hover:text-gray-200 block font-medium"
 								>
 									Careers
-								</a>
+								</Link>
 							</li>
 						</ul>
 					</div>
@@ -113,32 +113,31 @@ const Footer = () => {
 						</h2>
 						<ul className="list-none">
 							<li className="mb-2">
-								{' '}
-								<a
-									href="#"
+								<Link
+									to="#"
 									className="text-gray-400 hover:text-gray-200 block font-medium"
 								>
 									<i className="fab fa-facebook-square mr-2"></i>
 									Facebook
-								</a>
+								</Link>
 							</li>
 							<li className="mb-2">
-								<a
-									href="#"
+								<Link
+									to="#"
 									className="text-gray-400 hover:text-gray-200 block font-medium"
 								>
 									<i className="fab fa-twitter-square mr-2"></i>
 									Twitter
-								</a>
+								</Link>
 							</li>
 							<li className="mb-2">
-								<a
-									href="#"
+								<Link
+									to="#"
 									className="text-gray-400 hover:text-gray-200 block font-medium"
 								>
 									<i className="fab fa-instagram-square mr-2"></i>
 									Instagram
-								</a>
+								</Link>
 							</li>
 						</ul>
 					</div>

@@ -69,7 +69,7 @@ const ProfilePage = () => {
 	};
 
 	return (
-		<div className="min-h-screen bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
+		<div className="min-h-screen bg-gradient-to-r from-green-400 via-teal-500 to-blue-500">
 			<div className="container mx-auto px-4 py-8">
 				<div className="grid grid-cols-1 md:grid-cols-12 gap-8">
 					{/* Sidebar */}

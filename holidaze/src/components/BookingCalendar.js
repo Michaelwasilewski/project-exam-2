@@ -1,171 +1,106 @@
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, {
+	useEffect,
+	useState,
+} from 'react';
 import {
-	faSearch,
-	faQuestionCircle,
-} from '@fortawesome/free-solid-svg-icons';
+	useDispatch,
+	useSelector,
+} from 'react-redux';
+import dayjs from 'dayjs';
+import { fetchBookings } from '../store/modules/bookingSlice';
 
-const SearchForm = () => {
-	const [startDate, setStartDate] =
+const BookingCalendar = () => {
+	const dispatch = useDispatch();
+	const bookings = useSelector(
+		(state) => state.bookings.bookings
+	);
+	const [date, setDate] = useState(dayjs());
+	const [selectedDate, setSelectedDate] =
 		useState(null);
-	const [endDate, setEndDate] = useState(null);
-	const [guests, setGuests] = useState(1);
-	const [showGuests, setShowGuests] =
-		useState(false);
 
-	const handleGuestsChange = (e) => {
-		setGuests(e.target.value);
-	};
-	const [showModal, setShowModal] =
-		useState(false);
-	const toggleModal = () => {
-		setShowModal(!showModal);
-	};
-	const handleSearch = () => {
-		console.log(
-			`Start date: ${startDate}, End date: ${endDate}, Guests: ${guests}`
-		);
-	};
+	useEffect(() => {
+		dispatch(fetchBookings());
+	}, [dispatch]);
 
-	const toggleGuests = () => {
-		setShowGuests(!showGuests);
-	};
+	const startDay = date
+		.startOf('month')
+		.startOf('week');
+	const endDay = date
+		.endOf('month')
+		.endOf('week');
+	const days = Array.from(
+		{ length: endDay.diff(startDay, 'day') + 1 },
+		(_, i) => startDay.add(i, 'day')
+	);
+
+	const weeks = Array.from(
+		{ length: Math.ceil(days.length / 7) },
+		(_, i) => days.slice(i * 7, i * 7 + 7)
+	);
 
 	return (
-		<form className="bg-white rounded-lg overflow-hidden shadow-lg p-8">
-			<div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-				<div className="relative">
-					<label
-						htmlFor="startDate"
-						className="block text-gray-700 font-medium mb-2"
-					>
-						Check-in
-						<span
-							className="relative inline-flex items-center justify-center h-6 w-6 rounded-full bg-gray-200 text-gray-600"
-							onMouseEnter={toggleModal}
-							onMouseLeave={toggleModal}
-						>
-							<FontAwesomeIcon
-								icon={faQuestionCircle}
-							/>
-							{showModal && (
-								<div className="absolute bottom-full left-0 ml-2 w-64 p-2 bg-white rounded-md shadow-lg">
-									<p className="text-gray-700 text-sm font-medium">
-										Select the date you want to
-										check in
-									</p>
-								</div>
-							)}
-						</span>
-					</label>
-					<input
-						type="date"
-						value={startDate}
-						onChange={(e) =>
-							setStartDate(e.target.value)
-						}
-						className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-						placeholder="Select a date"
-					/>
-				</div>
-				<div className="relative">
-					<label
-						htmlFor="endDate"
-						className="block text-gray-700 font-medium mb-2"
-					>
-						Check-out
-						<span
-							className="relative inline-flex items-center justify-center h-6 w-6 rounded-full bg-gray-200 text-gray-600"
-							onMouseEnter={toggleModal}
-							onMouseLeave={toggleModal}
-						>
-							<FontAwesomeIcon
-								icon={faQuestionCircle}
-							/>
-							{showModal && (
-								<div className="absolute top-full left-0 ml-2 w-64 p-2 bg-white rounded-md shadow-lg">
-									<p className="text-gray-700 text-sm font-medium">
-										Select the date you want to
-										Check out
-									</p>
-								</div>
-							)}
-						</span>
-					</label>
-					<input
-						type="date"
-						value={endDate}
-						onChange={(e) =>
-							setEndDate(e.target.value)
-						}
-						className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-						placeholder="Select a date"
-					/>
-				</div>
-
-				<div className="col-span-3">
-					<label
-						htmlFor="guests"
-						className="block text-gray-700 font-semibold mb-2"
-					>
-						Guests
-						<span
-							className="ml-1 relative inline-flex items-center justify-center h-6 w-6 rounded-full bg-gray-200 text-gray-600"
-							onMouseEnter={toggleGuests}
-							onMouseLeave={toggleGuests}
-						>
-							<FontAwesomeIcon
-								icon={faQuestionCircle}
-							/>
-
-							{showGuests && (
-								<div className="absolute top-full right-0 mt-2 bg-white border border-gray-300 p-2 rounded-md">
-									<label
-										htmlFor="guests"
-										className="block text-gray-700 font-semibold mb-2 cursor-pointer"
-									>
-										<div className="absolute top-full left-0 ml-2 w-64 p-2 bg-white rounded-md shadow-lg">
-											<p className="text-gray-700 text-sm font-medium">
-												Select how many guests
-											</p>
-										</div>
-									</label>
-
-									<input
-										id="guests"
-										type="number"
-										min="1"
-										max="10"
-										value={guests}
-										onChange={handleGuestsChange}
-										className="w-full p-2 border rounded-md"
-									/>
-								</div>
-							)}
-						</span>
-					</label>
-					<input
-						id="guests"
-						type="number"
-						min="1"
-						max="10"
-						value={guests}
-						onChange={handleGuestsChange}
-						className="w-full p-2 border rounded-md"
-					/>
-				</div>
-			</div>
-			<div className="mt-8">
+		<div className="flex flex-col items-center justify-center p-10">
+			<div className="flex items-center justify-between w-full max-w-2xl p-2">
 				<button
-					className="bg-blue-600 w-full text-white font-medium py-3 rounded-lg hover:bg-blue-700 transition duration-300"
-					onClick={handleSearch}
+					onClick={() =>
+						setDate(date.subtract(1, 'month'))
+					}
+					className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
 				>
-					<FontAwesomeIcon icon={faSearch} />
-					<span>Search</span>
+					Previous
+				</button>
+				<div className="text-center">
+					<span className="text-xl font-bold">
+						{date.format('MMMM YYYY')}
+					</span>
+				</div>
+				<button
+					onClick={() =>
+						setDate(date.add(1, 'month'))
+					}
+					className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+				>
+					Next
 				</button>
 			</div>
-		</form>
+
+			<div className="border border-gray-300 w-full max-w-2xl">
+				{weeks.map((week, i) => (
+					<div
+						key={i}
+						className="grid grid-cols-7 divide-x divide-gray-300"
+					>
+						{week.map((day, j) => (
+							<div
+								key={j}
+								className={`p-4 border-b last:divide-x-0 ${
+									day.isSame(selectedDate, 'day')
+										? 'bg-blue-200'
+										: 'hover:bg-gray-200'
+								} ${
+									day.isSame(date, 'month')
+										? 'text-black'
+										: 'text-gray-500'
+								}`}
+								onClick={() =>
+									setSelectedDate(day)
+								}
+							>
+								{day.format('D')}
+							</div>
+						))}
+					</div>
+				))}
+			</div>
+
+			{selectedDate && (
+				<p className="mt-4">
+					Selected date:{' '}
+					{selectedDate.format('YYYY-MM-DD')}
+				</p>
+			)}
+		</div>
 	);
 };
 
-export default SearchForm;
+export default BookingCalendar;

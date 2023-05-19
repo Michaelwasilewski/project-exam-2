@@ -10,10 +10,14 @@ module.exports = {
 				neutral1: '#F7FAFC', // Neutral color 1: for backgrounds, borders, or text
 				neutral2: '#718096', // Neutral color 2: for navigation menus, footers, or other secondary elements.
 			},
+			fontFamily: {
+				lato: ['Lato', 'sans-serif'], // Add this line to define the custom font
+			},
 		},
 	},
 	plugins: [
 		require('@tailwindcss/aspect-ratio'),
 		require('@tailwindcss/forms'),
 	],
+	darkMode: 'class',
 };

@@ -13,6 +13,7 @@ import {
 	fetchVenues,
 	fetchTotalVenues,
 } from '../../store/modules/venueSlice';
+import { authSlice } from '../../store/modules/authSlice';
 
 const VenuePage = () => {
 	const dispatch = useDispatch();
@@ -68,6 +69,26 @@ const VenuePage = () => {
 	const handleSortChange = (event) => {
 		setSortOption(event.target.value);
 	};
+
+	useEffect(() => {
+		const sorted = [...filteredVenues].sort(
+			(a, b) => {
+				switch (sortOption) {
+					case 'highest-rating':
+						return b.rating - a.rating;
+					case 'lowest-rating':
+						return a.rating - b.rating;
+					case 'lowest-price':
+						return a.price - b.price;
+					case 'highest-price':
+						return b.price - a.price;
+					default:
+						return 0;
+				}
+			}
+		);
+		setFilteredVenues(sorted);
+	}, [sortOption]);
 
 	const sortedVenues = useSelector((state) =>
 		[...state.venues?.venues]?.sort((a, b) => {
@@ -179,12 +200,8 @@ const VenuePage = () => {
 							)}
 						</div>
 						<Link
-							to={
-								isLoggedIn
-									? '/create-venue'
-									: '/register'
-							}
-							className="mt-4 mb-4 bg-green-500 hover:bg-green-700 text-white font-semibold text-xl py-3 px-6 rounded-lg transition duration-300 ease-in-out inline-block shadow-md hover:shadow-lg transform hover:-translate-y-1"
+							to={'/create-venue'}
+							className="inline-block mt-4 mb-4 bg-blue-500 text-white font-semibold text-xl py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-1"
 						>
 							Create a Venue
 						</Link>
@@ -193,7 +210,7 @@ const VenuePage = () => {
 			</div>
 			<div className="container mx-auto my-4">
 				<div className="container mx-auto my-4 px-4">
-					<div className="text-center py-8 bg-gradient-to-b from-gray-100 to-transparent">
+					<div className="text-center py-8 ">
 						<h2 className="text-3xl font-bold text-gray-900 mb-4">
 							Venues
 						</h2>

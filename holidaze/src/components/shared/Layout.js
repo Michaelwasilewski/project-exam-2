@@ -23,7 +23,7 @@ const Layout = ({ children }) => {
 		setIsLoggedIn(false);
 	};
 	return (
-		<div className="bg-gradient-to-b from-gray-100 to-purple-200 min-h-screen">
+		<div className="min-h-screen bg-gradient-to-r from-green-400 via-teal-500 to-blue-500">
 			<Header
 				isLoggedIn={isLoggedIn}
 				onLogout={onLogout}
