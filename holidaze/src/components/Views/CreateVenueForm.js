@@ -149,6 +149,7 @@ const CreateVenueForm = () => {
 							type="text"
 							name="name"
 							id="name"
+							placeholder="Enter the title"
 							className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
@@ -169,6 +170,7 @@ const CreateVenueForm = () => {
 						<textarea
 							id="description"
 							name="description"
+							placeholder="Enter the description"
 							className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
@@ -217,6 +219,7 @@ const CreateVenueForm = () => {
 								type="text"
 								name="media"
 								id="media"
+								placeholder="Enter the gallery URL"
 								className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
@@ -236,6 +239,7 @@ const CreateVenueForm = () => {
 							Add
 						</button>
 					</div>
+
 					{/* Price per night and max guests fields */}
 					<div className="flex justify-between">
 						<div className="flex flex-col w-2/5">
@@ -246,6 +250,7 @@ const CreateVenueForm = () => {
 								type="number"
 								name="price"
 								id="pricePerNight"
+								placeholder="Enter the price per night"
 								className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
@@ -266,6 +271,7 @@ const CreateVenueForm = () => {
 								type="number"
 								name="maxGuests"
 								id="maxGuests"
+								placeholder="Enter the maximum number of guests"
 								className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
@@ -349,7 +355,6 @@ const CreateVenueForm = () => {
 					</div>
 
 					{/* Address fields */}
-
 					<div className="flex flex-col">
 						<label htmlFor="address">
 							Address
@@ -358,6 +363,7 @@ const CreateVenueForm = () => {
 							type="text"
 							name="address"
 							id="address"
+							placeholder="Enter the address"
 							className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
@@ -377,6 +383,7 @@ const CreateVenueForm = () => {
 							type="text"
 							name="city"
 							id="city"
+							placeholder="Enter the city"
 							className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
@@ -396,6 +403,7 @@ const CreateVenueForm = () => {
 							type="text"
 							name="state"
 							id="state"
+							placeholder="Enter the state"
 							className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}
@@ -415,6 +423,7 @@ const CreateVenueForm = () => {
 							type="text"
 							name="zip"
 							id="zip"
+							placeholder="Enter the zip code"
 							className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 							onChange={formik.handleChange}
 							onBlur={formik.handleBlur}

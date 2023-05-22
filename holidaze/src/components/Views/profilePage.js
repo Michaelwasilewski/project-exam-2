@@ -156,7 +156,7 @@ const ProfilePage = () => {
 	};
 	return (
 		<div className="rounded-lg shadow p-6">
-			<div className="flex flex-col justify-center items-center mb-6 pt-16 pb-16 bg-gradient-to-r from-blue-500 to-blue-700 text-white">
+			<div className="flex flex-col justify-center items-center mb-6 pt-16 pb-16  text-white">
 				<h2 className="text-4xl font-bold mb-6">
 					Profile
 				</h2>
@@ -174,19 +174,19 @@ const ProfilePage = () => {
 								<span className="text-gray-500">
 									Name:
 								</span>{' '}
-								{user?.name}
+								{userDetails?.name}
 							</p>
 							<p className="text-lg font-semibold mb-1">
 								<span className="text-gray-500">
 									Email:
 								</span>{' '}
-								{user?.email}
+								{userDetails?.email}
 							</p>
 							<p className="text-lg font-semibold">
 								<span className="text-gray-500">
 									Venue Manager:
 								</span>{' '}
-								{user?.venueManager
+								{userDetails?.venueManager
 									? 'Yes'
 									: 'No'}
 							</p>
@@ -283,44 +283,44 @@ const ProfilePage = () => {
 								<h3 className="text-2xl font-semibold mb-2">
 									{venue.name}
 								</h3>
-								<p className="text-gray-600 mb-2">
-									<span className="font-semibold">
-										Address:
-									</span>{' '}
-									{venue.location.address},{' '}
-									{venue.location.city},{' '}
-									{venue.location.zip},{' '}
-									{venue.location.country},{' '}
-									{venue.location.continent}
-								</p>
-								<p className="text-gray-600 mb-2">
-									<span className="font-semibold">
-										Price:
-									</span>{' '}
-									${venue.price}
-								</p>
-								<div className="flex flex-wrap mb-2">
-									{venue.media.map(
-										(mediaItem, index) => (
-											<img
-												key={index}
-												src={mediaItem}
-												alt={`Venue Media ${
-													index + 1
-												}`}
-												className="w-16 h-16 object-cover rounded-md mr-2 mb-2"
-											/>
-										)
-									)}
+								<div className="bg-backgroundwhite p-2 flex flex-col md:flex-row my-2 rounded-md">
+									<div className="flex items-center justify-center md:h-40 md:w-40">
+										<img
+											className="rounded-md object-cover h-60 w-full md:h-full md:w-auto"
+											src={venue.media[0]}
+											alt={venue.name}
+										/>
+									</div>
+									<div className="md:w-96 lg:w-60 flex flex-col">
+										<p className="font-header text-center md:text-left font-bold text-md px-2 mt-4">
+											{venue.name}
+										</p>
+										<div className="mx-auto shadow-md w-40 md:w-60 my-4 border-t border-main"></div>
+										<p className="font-paragraph text-sm px-2 my-2">
+											Address:{' '}
+											{venue.location.address},{' '}
+											{venue.location.city},{' '}
+											{venue.location.zip},{' '}
+											{venue.location.country},{' '}
+											{venue.location.continent}
+										</p>
+										<p className="font-paragraph text-sm px-2 my-2">
+											Price: ${venue.price}
+										</p>
+									</div>
+									<div className="flex justify-center md:items-end">
+										<button
+											onClick={() =>
+												handleDeleteVenue(
+													venue.id
+												)
+											}
+											className="flex w-32 md:mx-auto font-header justify-center rounded-md bg-red-500 hover:bg-red-600 px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm my-4 ml-2"
+										>
+											Delete
+										</button>
+									</div>
 								</div>
-								<button
-									onClick={() =>
-										handleDeleteVenue(venue.id)
-									}
-									className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600"
-								>
-									Delete Venue
-								</button>
 							</div>
 						</div>
 					))}

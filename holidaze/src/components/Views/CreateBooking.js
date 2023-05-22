@@ -188,6 +188,13 @@ const CreateBooking = () => {
 							onChange={formik.handleChange}
 							value={formik.values.guests}
 						/>
+						<p className="text-sm font-paragraph font-medium leading-6 text-gray-700">
+							This booking only allows{' '}
+							<span className="text-red-700">
+								{singleVenue?.maxGuests} guests
+							</span>
+							.
+						</p>
 						{formik.errors.guests &&
 						formik.touched.guests ? (
 							<p className="text-red-500 text-xs italic">

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { setLoadingState } from './loaderSlice';
 import { setError } from './errorSlice';
+
 const venueSlice = createSlice({
 	name: 'venues',
 	initialState: {
@@ -135,7 +136,7 @@ export const newVenue =
 			const data = await response.json();
 			console.log(data);
 			dispatch(SET_CREATE_VENUE(data));
-			// window.location.href = '/';
+			window.location.href = '/';
 		} catch (e) {
 			console.log(e);
 		}
