@@ -37,6 +37,17 @@ const ProfilePage = () => {
 		(state) => state.profile
 	);
 	const bookings = singleProfile?.bookings;
+	const userDetails = useSelector(
+		(state) => state.profile.singleProfile
+	);
+	const [userAvatar, setUserAvatar] =
+		useState(null);
+
+	useEffect(() => {
+		if (userDetails) {
+			setUserAvatar(userDetails.avatar);
+		}
+	}, [userDetails]);
 
 	const [user, setUser] = useState(null);
 
@@ -153,7 +164,7 @@ const ProfilePage = () => {
 					<div className="md:w-1/2">
 						<div className="relative w-32 h-32 mx-auto">
 							<img
-								src={user?.avatar}
+								src={userAvatar}
 								alt="user avatar"
 								className="w-full h-full rounded-full object-cover"
 							/>
