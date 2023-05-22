@@ -156,11 +156,11 @@ const ProfilePage = () => {
 	};
 	return (
 		<div className="rounded-lg shadow p-6">
-			<div className="flex flex-col items-center mb-6">
-				<h2 className="text-2xl font-semibold mb-4">
+			<div className="flex flex-col justify-center items-center mb-6 pt-16 pb-16 bg-gradient-to-r from-blue-500 to-blue-700 text-white">
+				<h2 className="text-4xl font-bold mb-6">
 					Profile
 				</h2>
-				<div className="bg-white shadow rounded-lg p-6 w-full flex md:flex-row flex-col md:space-x-6 space-y-4 md:space-y-0">
+				<div className="bg-white shadow-lg rounded-lg p-6 w-full md:w-2/3 flex flex-col md:flex-row md:space-x-6 space-y-4 md:space-y-0 text-black">
 					<div className="md:w-1/2">
 						<div className="relative w-32 h-32 mx-auto">
 							<img
