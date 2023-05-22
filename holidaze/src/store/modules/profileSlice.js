@@ -1,135 +1,105 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
-	profiles: [],
-	singleProfile: null,
-	loggedInUser: null,
-};
-
 const profileSlice = createSlice({
-	name: 'profiles',
-	initialState,
+	name: 'profile',
+	initialState: {
+		singleProfile: null,
+	},
 	reducers: {
-		setProfiles: (state, action) => {
-			state.profiles = action.payload;
-		},
-		setSingleProfile: (state, action) => {
+		SET_SINGLE_PROFILE: (state, action) => {
 			state.singleProfile = action.payload;
-		},
-		setLoggedInUser: (state, action) => {
-			state.loggedInUser = action.payload;
-		},
-		updateAvatar: (state, action) => {
-			const { name, avatar } = action.payload;
-			if (state.loggedInUser.name === name) {
-				state.loggedInUser.avatar = avatar;
-			}
-			const profileIndex =
-				state.profiles.findIndex(
-					(profile) => profile.name === name
-				);
-			if (profileIndex !== -1) {
-				state.profiles[profileIndex].avatar =
-					avatar;
-			}
-			if (
-				state.singleProfile &&
-				state.singleProfile.name === name
-			) {
-				state.singleProfile.avatar = avatar;
-			}
 		},
 	},
 });
 
 export default profileSlice.reducer;
 
-export const {
-	setProfiles,
-	setSingleProfile,
-	setLoggedInUser,
-	updateAvatar,
-} = profileSlice.actions;
-export const updateLoggedInUserAvatar =
-	(name, accessToken, avatarUrl) =>
-	async (dispatch) => {
-		try {
-			const response = await fetch(
-				`https://nf-api.onrender.com/api/v1/holidaze/profiles/${name}/media`,
-				{
-					method: 'PUT',
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${accessToken}`,
-					},
-					body: JSON.stringify({
-						avatar: avatarUrl,
-					}),
-				}
-			);
-
-			if (!response.ok) {
-				throw new Error(
-					`HTTP error! status: ${response.status}`
-				);
-			}
-
-			const data = await response.json();
-			dispatch(setLoggedInUser(data));
-		} catch (e) {
-			console.error(
-				'Failed to update profile avatar',
-				e
-			);
-		}
-	};
-
-export const storeLoggedInUser =
-	(user) => (dispatch) => {
-		dispatch(setLoggedInUser(user));
-		localStorage.setItem(
-			'user',
-			JSON.stringify(user)
-		);
-	};
-export const fetchProfiles =
-	(accessToken) => async (dispatch) => {
-		try {
-			const response = await fetch(
-				'https://nf-api.onrender.com/api/v1/holidaze/profiles',
-				{
-					headers: {
-						Authorization: `Bearer ${accessToken}`,
-					},
-				}
-			);
-			const data = await response.json();
-			dispatch(setProfiles(data));
-		} catch (e) {
-			console.error(
-				'Failed to fetch profiles',
-				e
-			);
-		}
-	};
+const { SET_SINGLE_PROFILE } =
+	profileSlice.actions;
+const accessToken = localStorage.getItem(
+	'accessToken'
+);
 
 export const fetchSingleProfile =
-	(name, accessToken) => async (dispatch) => {
+	(name, profileData) => async (dispatch) => {
 		try {
 			const response = await fetch(
 				`https://nf-api.onrender.com/api/v1/holidaze/profiles/${name}?_bookings=true&_venues=true`,
 				{
+					method: 'GET',
 					headers: {
+						'Content-Type': 'application/json',
 						Authorization: `Bearer ${accessToken}`,
 					},
+					body: JSON.stringify(profileData),
 				}
 			);
 			const data = await response.json();
-			dispatch(setSingleProfile(data));
+			console.log(data);
+			dispatch(SET_SINGLE_PROFILE(data));
 		} catch (e) {
-			console.error(
-				`Failed to fetch profile ${name}`,
-				e
-			);
+			console.log(e);
 		}
 	};
+export const logInUser = (userData) => {
+	fetch(
+		'https://nf-api.onrender.com/api/v1/holidaze/auth/login',
+		{
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(userData),
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(response.statusText);
+			}
+			return response.json();
+		})
+		.then((data) => {
+			console.log(data);
+			localStorage.setItem('userName', data.name);
+			localStorage.setItem('email', data.email);
+			localStorage.setItem('avatar', data.avatar);
+			localStorage.setItem(
+				'accessToken',
+				data.accessToken
+			);
+			localStorage.setItem(
+				'venueManager',
+				data.venueManager
+			);
+			window.location.href = '/';
+		})
+		.catch((error) => {
+			alert('Wrong password or email');
+		});
+};
+
+export const registerUser = (userData) => {
+	fetch(
+		'https://nf-api.onrender.com/api/v1/holidaze/auth/register',
+		{
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(userData),
+		}
+	)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error(response.statusText);
+			}
+			return response.json();
+		})
+		.then((data) => {
+			console.log(data);
+			window.location.href = '/login';
+		})
+		.catch((error) => {
+			alert('There was an error, try again');
+		});
+};

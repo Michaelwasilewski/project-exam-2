@@ -1,11 +1,25 @@
-import React, { useState } from 'react';
+import React, {
+	useState,
+	useEffect,
+} from 'react';
 import { Link } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import Logo from '../../img/holidazelogo.png';
 
 function Header({ isLoggedIn, onLogout }) {
 	const [showMenu, setShowMenu] = useState(false);
+	const [avatar, setAvatar] = useState(null);
 
+	const [userName, setUserName] = useState('');
+
+	useEffect(() => {
+		if (isLoggedIn) {
+			setAvatar(localStorage.getItem('avatar'));
+			setUserName(
+				localStorage.getItem('userName')
+			);
+		}
+	}, [isLoggedIn]);
 	const toggleMenu = () => {
 		setShowMenu(!showMenu);
 	};
@@ -21,6 +35,20 @@ function Header({ isLoggedIn, onLogout }) {
 							alt="Holidaze logo"
 						/>
 					</Link>
+					{isLoggedIn && (
+						<div className="flex items-center ml-4">
+							{avatar && (
+								<img
+									src={avatar}
+									alt="User Avatar"
+									className="h-8 w-8 rounded-full"
+								/>
+							)}
+							<span className="ml-2 text-white">
+								Hello {userName}
+							</span>
+						</div>
+					)}
 					<button
 						onClick={toggleMenu}
 						className="md:hidden focus:outline-none"
@@ -58,6 +86,7 @@ function Header({ isLoggedIn, onLogout }) {
 							>
 								Profile
 							</Link>
+
 							<Link
 								to="/create-venue"
 								className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-blue-600 hover:bg-blue-700 rounded-md transition-colors duration-300 shadow-md"

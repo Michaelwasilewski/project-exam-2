@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import {
 	useSelector,
 	useDispatch,
@@ -13,13 +13,12 @@ import * as Yup from 'yup';
 import Logo from '../../img/holidazelogo.png';
 import { Link } from 'react-router-dom';
 import {
-	setAccessToken,
-	setUser,
-	setIsLoggedIn,
-} from '../../store/modules/authSlice';
+	fetchSingleProfile,
+	logInUser,
+	registerUser,
+} from '../../store/modules/profileSlice';
 
 export default function AuthForm({ mode }) {
-	const fileInputRef = useRef();
 	const dispatch = useDispatch();
 	useEffect(() => {}, []);
 
@@ -77,81 +76,35 @@ export default function AuthForm({ mode }) {
 			email: values.email,
 			password: values.password,
 		};
-		console.log(data);
 		if (mode === 'register') {
 			data.name = values.name;
 			data.venueManager =
 				values.venueManager === 'true';
 			data.avatar = values.avatarUrl;
-		}
-
-		if (values.name) {
-			data.name = values.name;
-		}
-
-		const apiUrl =
-			mode === 'register'
-				? 'https://nf-api.onrender.com/api/v1/holidaze/auth/register'
-				: 'https://nf-api.onrender.com/api/v1/holidaze/auth/login';
-
-		try {
-			const response = await fetch(apiUrl, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(data),
-			});
-
-			if (response.ok) {
-				const responseData =
-					await response.json();
-				console.log(responseData);
-				localStorage.setItem(
-					'accessToken',
-					responseData.accessToken
-				);
-				localStorage.setItem(
-					'user',
-					JSON.stringify({
-						name: responseData.name,
-						email: responseData.email,
-						avatar: responseData.avatar,
-						venueManager:
-							responseData.venueManager,
-					})
-				);
+			try {
+				await dispatch(registerUser(data));
 				dispatch(
-					setAccessToken(responseData.accessToken)
+					fetchSingleProfile(values.name, {})
 				);
-				dispatch(setUser(responseData.name));
-				dispatch(setIsLoggedIn(true));
-				if (mode === 'register') {
-					window.location.href = '/login';
-				} else {
-					window.location.href = '/';
-				}
-				console.log('Success:', responseData);
-			} else {
-				const errorData = await response.json();
-
-				console.error('Error:', errorData);
+			} catch (error) {
 				setErrors({
 					generic:
-						'An error occurred. Please try again.',
+						'Registration failed. Please try again.',
 				});
 			}
-		} catch (error) {
-			console.error(
-				'Network or other error:',
-				error
-			);
-			setErrors({
-				generic:
-					'A network error occurred. Please try again.',
-			});
+		} else {
+			try {
+				await dispatch(logInUser(data));
+				dispatch(
+					fetchSingleProfile(values.name, {})
+				);
+			} catch (error) {
+				setErrors({
+					generic:
+						'Login failed. Please try again.',
+				});
+			}
 		}
-
 		setSubmitting(false);
 	};
 	return (

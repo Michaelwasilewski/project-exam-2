@@ -238,9 +238,13 @@ const VenueDetail = () => {
 					</div>
 				</div>
 				<div className="mt-8 flex justify-center">
-					<BookNowButton />
+					<Link to={`/bookings/${id}`}>
+						<BookNowButton />
+					</Link>
 				</div>
-				<BackToHomepageButton />
+				<div className="mt-4">
+					<BackToHomepageButton />
+				</div>
 			</div>
 		</div>
 	);

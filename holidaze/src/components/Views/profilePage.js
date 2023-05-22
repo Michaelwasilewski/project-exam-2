@@ -3,29 +3,46 @@ import React, {
 	useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
+import { fetchSingleProfile } from '../../store/modules/profileSlice';
 import {
-	storeLoggedInUser,
-	fetchSingleProfile,
-} from '../../store/modules/profileSlice';
+	deleteVenue,
+	deleteBooking,
+	fetchSingleBooking,
+} from '../../store/modules/venueSlice';
 import { useSelector } from 'react-redux';
-import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { updateLoggedInUserAvatar } from '../../store/modules/profileSlice';
+import { updateLocalStorage } from '../utils/storage';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import {
+	useParams,
+	Link,
+} from 'react-router-dom';
 
 const ProfilePage = () => {
 	const accessToken = localStorage.getItem(
 		'accessToken'
 	);
-	const singleProfile = useSelector(
-		(state) => state.profile.singleProfile
-	);
-	const venues = singleProfile?.venues || [];
-	const [user, setUser] = useState(null);
+	let name = localStorage.getItem('userName');
+	const { id } = useParams();
+	const validationSchema = Yup.object().shape({
+		avatar: Yup.string()
+			.url('Invalid URL')
+			.matches(
+				/\.(gif|jpe?g|png)$/i,
+				'Invalid image URL'
+			),
+	});
 	const dispatch = useDispatch();
+	const { singleProfile } = useSelector(
+		(state) => state.profile
+	);
+	const bookings = singleProfile?.bookings;
+
+	const [user, setUser] = useState(null);
+
 	useEffect(() => {
 		const storedUser =
 			localStorage.getItem('user');
-		console.log('stored user: ', storedUser);
 		if (
 			storedUser &&
 			storedUser !== 'undefined'
@@ -33,7 +50,6 @@ const ProfilePage = () => {
 			try {
 				const userData = JSON.parse(storedUser);
 				setUser(userData);
-				dispatch(storeLoggedInUser(userData));
 				console.log(userData);
 			} catch (error) {
 				console.error(
@@ -42,177 +58,358 @@ const ProfilePage = () => {
 				);
 			}
 		}
-	}, [dispatch]);
+	}, []);
+
 	useEffect(() => {
-		if (user && user.name) {
-			dispatch(
-				fetchSingleProfile(user.name, accessToken)
-			);
+		if (name) {
+			dispatch(fetchSingleProfile(name));
+			if (id) {
+				dispatch(fetchSingleBooking(id));
+			}
 		}
-	}, [user, accessToken, dispatch]);
-	if (!user) {
-		return <p>Loading profile...</p>;
-	}
+	}, [dispatch, name, id]);
+
+	const formik = useFormik({
+		initialValues: {
+			avatar: '',
+		},
+		validationSchema,
+		onSubmit: (values) => {
+			const data = { avatar: values.avatar };
+			fetch(
+				`https://nf-api.onrender.com/api/v1/holidaze/profiles/${name}/media`,
+				{
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${accessToken}`,
+					},
+					body: JSON.stringify(data),
+				}
+			)
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error(response.statusText);
+					}
+					return response.json();
+				})
+				.then((data) => {
+					console.log(data);
+					updateLocalStorage(
+						`https://nf-api.onrender.com/api/v1/holidaze/profiles/${name}`
+					);
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		},
+	});
+
 	const handleChangeAvatar = () => {
-		const newAvatarUrl = prompt(
-			'Please enter the new avatar URL:'
-		);
-		if (newAvatarUrl) {
-			dispatch(
-				updateLoggedInUserAvatar(
-					user.name,
-					newAvatarUrl,
-					user.accessToken
-				)
-			);
-		}
+		formik.handleSubmit();
 	};
 
+	const venueManager = localStorage.getItem(
+		'venueManager'
+	);
+
+	const [activeTab, setActiveTab] = useState(
+		venueManager === 'true'
+			? 'venues'
+			: 'bookings'
+	);
+
+	const { isError } = useSelector(
+		(state) => state.error
+	);
+	const { errorMessage } = useSelector(
+		(state) => state.error
+	);
+
+	const handleDeleteVenue = (id) => {
+		dispatch(deleteVenue(id));
+	};
+
+	const handleDeleteBooking = (id) => {
+		dispatch(deleteBooking(id));
+	};
+	const formatDate = (dateString) => {
+		const options = {
+			year: 'numeric',
+			month: 'long',
+			day: 'numeric',
+		};
+		return new Date(
+			dateString
+		).toLocaleDateString(undefined, options);
+	};
 	return (
-		<div className="min-h-screen bg-gradient-to-r from-green-400 via-teal-500 to-blue-500">
-			<div className="container mx-auto px-4 py-8">
-				<div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-					{/* Sidebar */}
-					<aside className="col-span-12 md:col-span-3 bg-white rounded-lg shadow-lg p-8">
-						{/* User profile summary */}
-						<div className="flex flex-col items-center mb-8">
+		<div className="rounded-lg shadow p-6">
+			<div className="flex flex-col items-center mb-6">
+				<h2 className="text-2xl font-semibold mb-4">
+					Profile
+				</h2>
+				<div className="bg-white shadow rounded-lg p-6 w-full flex md:flex-row flex-col md:space-x-6 space-y-4 md:space-y-0">
+					<div className="md:w-1/2">
+						<div className="relative w-32 h-32 mx-auto">
 							<img
-								className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
-								src={
-									user.avatar ||
-									'https://via.placeholder.com/150'
-								}
-								alt={user.name}
+								src={user?.avatar}
+								alt="user avatar"
+								className="w-full h-full rounded-full object-cover"
 							/>
-							<h2 className="text-xl font-semibold mt-2">
-								{user.name}
-							</h2>
+						</div>
+						<div className="text-center mt-4">
+							<p className="text-lg font-semibold mb-1">
+								<span className="text-gray-500">
+									Name:
+								</span>{' '}
+								{user?.name}
+							</p>
+							<p className="text-lg font-semibold mb-1">
+								<span className="text-gray-500">
+									Email:
+								</span>{' '}
+								{user?.email}
+							</p>
+							<p className="text-lg font-semibold">
+								<span className="text-gray-500">
+									Venue Manager:
+								</span>{' '}
+								{user?.venueManager
+									? 'Yes'
+									: 'No'}
+							</p>
+						</div>
+					</div>
+					<div className="md:w-1/2">
+						<form className="flex flex-col space-y-2">
+							<label
+								htmlFor="avatar"
+								className="font-semibold text-gray-600"
+							>
+								Avatar URL
+							</label>
+							<input
+								id="avatar"
+								name="avatar"
+								type="text"
+								onChange={formik.handleChange}
+								value={formik.values.avatar}
+								className="border-2 border-gray-300 p-2 rounded"
+								placeholder="Enter Avatar URL"
+							/>
+							{formik.errors.avatar && (
+								<div className="text-red-500">
+									{formik.errors.avatar}
+								</div>
+							)}
 							<button
-								className="mt-2 text-sm text-gray-500 hover:text-gray-600"
 								onClick={handleChangeAvatar}
+								type="button"
+								className="mt-2 px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 self-start"
 							>
 								Change Avatar
 							</button>
-						</div>
-
-						{/* Navigation menu */}
-						<nav className="space-y-4 mb-8">
-							<a
-								href="/dashboard"
-								className="block text-gray-700 hover:text-gray-900"
-							>
-								Dashboard
-							</a>
-							<a
-								href="/events"
-								className="block text-gray-700 hover:text-gray-900"
-							>
-								Events
-							</a>
-							<a
-								href="/bookings"
-								className="block text-gray-700 hover:text-gray-900"
-							>
-								Bookings
-							</a>
-							<a
-								href="/settings"
-								className="block text-gray-700 hover:text-gray-900"
-							>
-								Settings
-							</a>
-						</nav>
-
-						{/* Search bar */}
-						<div className="relative">
-							<input
-								type="text"
-								className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:border-blue-500"
-								placeholder="Search..."
-							/>
-							<button className="absolute right-0 top-0 mt-2 mr-4 text-gray-600 hover:text-gray-800">
-								<i className="fas fa-search"></i>
-							</button>
-						</div>
-					</aside>
-
-					{/* Main content */}
-					<main className="col-span-12 md:col-span-9 space-y-8">
-						{/* Profile card */}
-						<div className="bg-white rounded-lg shadow-lg w-full p-8">
-							<div className="flex flex-col items-center">
-								<img
-									className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-gray-200"
-									src={
-										user.avatar ||
-										'https://via.placeholder.com/150'
-									}
-									alt={user.name}
-								/>
-								<button
-									className=" text-sm text-gray-500 hover:text-gray-600"
-									onClick={handleChangeAvatar}
-								>
-									Change Avatar
-								</button>
-								<h1 className="text-4xl font-extrabold mb-2 text-gray-800">
-									{user.name}
-								</h1>
-								<p className="text-xl font-semibold mb-1 text-gray-700">
-									Email: {user.email}
-								</p>
-								<p className="text-xl font-semibold text-gray-700">
-									Venue Manager:{' '}
-									{user.venueManager
-										? 'Yes'
-										: 'No'}
-								</p>
-							</div>
-						</div>
-
-						{/* Venue carousel */}
-						<div className="bg-white rounded-lg shadow-lg w-full p-8">
-							<h2 className="text-2xl font-bold mb-4">
-								Venues
-							</h2>
-							{venues.length > 0 ? (
-								<Carousel
-									showArrows={true}
-									showStatus={false}
-									showThumbs={false}
-									infiniteLoop={true}
-									autoPlay={false}
-									swipeable={true}
-									emulateTouch={true}
-								>
-									{venues.map((venue) => (
-										<div
-											key={venue.id}
-											className="relative rounded-lg overflow-hidden"
-										>
-											<img
-												className="w-full h-48 object-cover"
-												src={venue.media}
-												alt={venue.name}
-											/>
-											<div className="absolute inset-0 bg-black bg-opacity-50 p-4">
-												<h3 className="text-xl font-semibold mb-2 text-center text-white">
-													{venue.name}
-												</h3>
-												<p className="text-gray-200 mb-2 text-center">
-													{venue.description}
-												</p>
-											</div>
-										</div>
-									))}
-								</Carousel>
-							) : (
-								<p>No venues found.</p>
-							)}
-						</div>
-					</main>
+						</form>
+					</div>
 				</div>
 			</div>
+
+			<div className="flex justify-around">
+				<button
+					onClick={() => setActiveTab('venues')}
+					className={`py-2 px-4 rounded ${
+						activeTab === 'venues'
+							? 'bg-blue-500 text-white'
+							: 'bg-white border-2 border-blue-500 text-blue-500'
+					}`}
+				>
+					Venues
+				</button>
+				<button
+					onClick={() => setActiveTab('bookings')}
+					className={`py-2 px-4 rounded ${
+						activeTab === 'bookings'
+							? 'bg-blue-500 text-white'
+							: 'bg-white border-2 border-blue-500 text-blue-500'
+					}`}
+				>
+					Bookings
+				</button>
+			</div>
+
+			{activeTab === 'venues' && (
+				<div className="mt-4">
+					{singleProfile?.venues?.map((venue) => (
+						<div
+							key={venue.id}
+							className="bg-white my-4 shadow-lg rounded-lg overflow-hidden"
+						>
+							<div className="relative">
+								<img
+									src={venue.media[0]}
+									alt={venue.name}
+									className="w-full h-48 object-cover"
+								/>
+								<div className="absolute top-2 left-2 bg-white rounded-full p-2">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										className="h-6 w-6 text-gray-500"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth={2}
+											d="M9 5l7 7-7 7"
+										/>
+									</svg>
+								</div>
+							</div>
+							<div className="p-4">
+								<h3 className="text-2xl font-semibold mb-2">
+									{venue.name}
+								</h3>
+								<p className="text-gray-600 mb-2">
+									<span className="font-semibold">
+										Address:
+									</span>{' '}
+									{venue.location.address},{' '}
+									{venue.location.city},{' '}
+									{venue.location.zip},{' '}
+									{venue.location.country},{' '}
+									{venue.location.continent}
+								</p>
+								<p className="text-gray-600 mb-2">
+									<span className="font-semibold">
+										Price:
+									</span>{' '}
+									${venue.price}
+								</p>
+								<div className="flex flex-wrap mb-2">
+									{venue.media.map(
+										(mediaItem, index) => (
+											<img
+												key={index}
+												src={mediaItem}
+												alt={`Venue Media ${
+													index + 1
+												}`}
+												className="w-16 h-16 object-cover rounded-md mr-2 mb-2"
+											/>
+										)
+									)}
+								</div>
+								<button
+									onClick={() =>
+										handleDeleteVenue(venue.id)
+									}
+									className="px-4 py-2 rounded bg-red-500 text-white hover:bg-red-600"
+								>
+									Delete Venue
+								</button>
+							</div>
+						</div>
+					))}
+				</div>
+			)}
+			{activeTab === 'bookings' && (
+				<div className="mt-4">
+					{bookings?.map((booking) => (
+						<div
+							key={booking.id}
+							className="bg-white my-4 shadow-lg rounded-lg overflow-hidden"
+						>
+							<div className="relative">
+								<img
+									src={booking.venue.media[0]}
+									alt={booking.venue.name}
+									className="w-full h-48 object-cover"
+								/>
+								<div className="absolute top-2 left-2 bg-white rounded-full p-2">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										className="h-6 w-6 text-gray-500"
+										fill="none"
+										viewBox="0 0 24 24"
+										stroke="currentColor"
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth={2}
+											d="M9 5l7 7-7 7"
+										/>
+									</svg>
+								</div>
+							</div>
+							<div className="p-4">
+								<h3 className="text-2xl font-semibold mb-2">
+									{booking.venue.name}
+								</h3>
+								<div className="bg-backgroundwhite p-2 flex flex-col md:flex-row my-2 rounded-md">
+									<div className="flex items-center justify-center md:h-40 md:w-40">
+										<img
+											className="rounded-md object-cover h-60 w-full md:h-full md:w-auto"
+											src={booking.venue.media[0]}
+											alt={booking.venue.name}
+										/>
+									</div>
+									<div className="md:w-96 lg:w-60 flex flex-col">
+										<p className="font-header text-center md:text-left font-bold text-md px-2 mt-4">
+											{booking.venue.name}
+										</p>
+										<div className="mx-auto shadow-md w-40 md:w-60 my-4 border-t border-main"></div>
+										<p className="font-paragraph text-sm px-2 my-2">
+											Booked from:{' '}
+											{formatDate(
+												booking.dateFrom
+											)}
+										</p>
+										<p className="font-paragraph text-sm px-2 my-2">
+											To:{' '}
+											{formatDate(booking.dateTo)}
+										</p>
+										<p className="font-paragraph text-sm px-2 my-2">
+											Guests: {booking.guests}
+										</p>
+									</div>
+									<div className="flex justify-center md:items-end">
+										<Link
+											to={`/bookings/${booking.id}`}
+										>
+											<button
+												type="submit"
+												className="flex w-32 md:mx-auto font-header justify-center rounded-md bg-main hover:bg-hovercolor px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm my-4"
+											>
+												View
+											</button>
+										</Link>
+										<button
+											onClick={() =>
+												handleDeleteBooking(
+													booking.id
+												)
+											}
+											className="flex w-32 md:mx-auto font-header justify-center rounded-md bg-red-500 hover:bg-red-600 px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm my-4 ml-2"
+										>
+											Delete
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					))}
+				</div>
+			)}
+
+			{isError && (
+				<div className="mt-4 text-red-500">
+					{errorMessage}
+				</div>
+			)}
 		</div>
 	);
 };
