@@ -4,3 +4,75 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.excluded {
+	cursor: not-allowed;
+	background-color: rgb(130, 37, 37);
+	border-radius: 5px;
+}
+
+.excluded:hover {
+	cursor: not-allowed;
+	background-color: rgb(120, 25, 25);
+}
+.react-datepicker {
+	font-family: Arial, sans-serif;
+	background-color: rgba(
+		255,
+		255,
+		255,
+		0.9
+	); /* semi-transparent white background */
+	border: none;
+	border-radius: 8px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+}
+
+.react-datepicker__header {
+	background-color: #32a89d; /* a teal color similar to your gradient */
+	border-bottom: none;
+	color: white;
+	padding: 10px 15px;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}
+
+.react-datepicker__current-month {
+	font-size: 1em;
+	margin-bottom: 10px;
+}
+
+.react-datepicker__day-names,
+.react-datepicker__week {
+	display: flex;
+	justify-content: space-between;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__day--outside-month {
+	width: calc(100% / 7);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #333;
+}
+
+.react-datepicker__day {
+	width: 30px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #333;
+	margin: 2px;
+}
+
+.react-datepicker__day--selected {
+	background-color: #32a89d; /* matching the teal color */
+	color: white;
+}
+
+.react-datepicker__day--disabled {
+	color: #ccc;
+}

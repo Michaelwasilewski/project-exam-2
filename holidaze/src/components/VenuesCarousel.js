@@ -2,9 +2,14 @@ import React, {
 	useState,
 	useEffect,
 } from 'react';
-import axios from 'axios';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
+import { fetchVenues } from '../store/modules/venueSlice';
+import {
+	useDispatch,
+	useSelector,
+} from 'react-redux';
+
 import 'slick-carousel/slick/slick-theme.css';
 import Venue from './Venue';
 import HeroSection from './HeroSection';
@@ -33,21 +38,15 @@ const Arrow = ({ direction, onClick }) => {
 };
 
 const VenuesCarousel = () => {
-	const [venues, setVenues] = useState([]);
+	const dispatch = useDispatch();
+	const venues = useSelector(
+		(state) => state.venues.venues
+	);
 
 	useEffect(() => {
-		const fetchVenues = async () => {
-			try {
-				const { data } = await axios.get(
-					'https://nf-api.onrender.com/api/v1/holidaze/venues'
-				);
-				setVenues(data);
-			} catch (error) {
-				console.error(error);
-			}
-		};
-		fetchVenues();
-	}, []);
+		// Dispatch the fetchVenues action
+		dispatch(fetchVenues());
+	}, [dispatch]); //
 
 	const sliderSettings = {
 		dots: false,

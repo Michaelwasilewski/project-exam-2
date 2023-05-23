@@ -13,7 +13,6 @@ import {
 	fetchVenues,
 	fetchTotalVenues,
 } from '../../store/modules/venueSlice';
-import { authSlice } from '../../store/modules/authSlice';
 
 const VenuePage = () => {
 	const dispatch = useDispatch();
@@ -32,9 +31,6 @@ const VenuePage = () => {
 	);
 	const venues = useSelector(
 		(state) => state.venues
-	);
-	const isLoggedIn = useSelector(
-		(state) => state.auth.isLoggedIn
 	);
 
 	const totalPages = () => {

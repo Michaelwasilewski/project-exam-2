@@ -7,6 +7,7 @@ import VenueDetail from '../components/Views/VenueDetail';
 import Bookings from '../components/Views/CreateBooking';
 import VenuePage from '../components/Views/AllVenues';
 import ProfilePage from '../components/Views/profilePage';
+import AccessDenied from '../components/Views/AccessDenied';
 const Router = () => {
 	return (
 		<>
@@ -26,6 +27,10 @@ const Router = () => {
 				<Route
 					path="/create-venue"
 					element={<CreateVenueForm />}
+				/>
+				<Route
+					path="/access-denied"
+					element={<AccessDenied />}
 				/>
 				<Route
 					path="/venue-detail/:id"

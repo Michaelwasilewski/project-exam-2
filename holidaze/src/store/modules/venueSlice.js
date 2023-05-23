@@ -30,6 +30,9 @@ const venueSlice = createSlice({
 				(v) => v.rating === highestRating
 			);
 		},
+		removeBooking: (state) => {
+			state.singleBooking = null;
+		},
 		setSingleVenue: (state, action) => {
 			state.singleVenue = action.payload;
 		},
@@ -42,6 +45,7 @@ const venueSlice = createSlice({
 		SET_DELETE_VENUE: (state, action) => {
 			state.createVenue = action.payload;
 		},
+
 		SET_UPDATE_VENUE: (state, action) => {
 			state.createVenue = action.payload;
 		},
@@ -61,6 +65,7 @@ export const {
 	setSingleVenue,
 	setTotalVenues,
 	SET_DELETE_VENUE,
+	removeBooking,
 	SET_CREATE_VENUE,
 	SET_UPDATE_VENUE,
 	SET_SINGLE_BOOKING,
@@ -81,7 +86,8 @@ export const fetchVenues =
 			dispatch(setLoadingState(false));
 			return data;
 		} catch (e) {
-			console.error('Failed to fetch venues', e);
+			dispatch(setError(true, e.message));
+			dispatch(setLoadingState(false));
 		}
 	};
 
@@ -90,7 +96,7 @@ export const fetchSingleVenue =
 		dispatch(setLoadingState(true));
 		try {
 			const response = await fetch(
-				`https://nf-api.onrender.com/api/v1/holidaze/venues/${id}`
+				`https://nf-api.onrender.com/api/v1/holidaze/venues/${id}?_owner=true&_bookings=true`
 			);
 			const data = await response.json();
 			dispatch(setSingleVenue(data));
@@ -100,6 +106,8 @@ export const fetchSingleVenue =
 				`Failed to fetch venue ${id}`,
 				e
 			);
+			dispatch(setError(true, e.message));
+			dispatch(setLoadingState(false));
 		}
 	};
 export const fetchTotalVenues =
@@ -117,6 +125,8 @@ export const fetchTotalVenues =
 				'Failed to fetch total venues',
 				e
 			);
+			dispatch(setError(true, e.message));
+			dispatch(setLoadingState(false));
 		}
 	};
 export const newVenue =
@@ -139,26 +149,46 @@ export const newVenue =
 			window.location.href = '/';
 		} catch (e) {
 			console.log(e);
+			dispatch(setError(true, e.message));
+			dispatch(setLoadingState(false));
 		}
 	};
 
-export const deleteVenue = (id) => {
-	fetch(
-		`https://nf-api.onrender.com/api/v1/holidaze/venues/${id}`,
-		{
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${accessToken}`,
-			},
+export const deleteVenue =
+	(id) => async (dispatch) => {
+		dispatch(setLoadingState(true));
+		try {
+			const response = await fetch(
+				`https://nf-api.onrender.com/api/v1/holidaze/venues/${id}`,
+				{
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error('Failed to delete venue');
+			}
+
+			dispatch(SET_DELETE_VENUE(id));
+			dispatch(setLoadingState(false));
+			window.location.href = '/profile';
+		} catch (e) {
+			console.error(
+				`Failed to delete venue ${id}`,
+				e
+			);
+			dispatch(setError(true, e.message));
+			dispatch(setLoadingState(false));
 		}
-	).then(() => {
-		window.location.href = '/profile';
-	});
-};
+	};
 
 export const updateVenue =
 	(id, venueData) => async (dispatch) => {
+		dispatch(setLoadingState(true));
 		try {
 			const response = await fetch(
 				`https://nf-api.onrender.com/api/v1/holidaze/venues/${id}`,
@@ -171,12 +201,23 @@ export const updateVenue =
 					body: JSON.stringify(venueData),
 				}
 			);
+
+			if (!response.ok) {
+				throw new Error('Failed to update venue');
+			}
+
 			const data = await response.json();
 			console.log(data);
 			dispatch(SET_UPDATE_VENUE(data));
+			dispatch(setLoadingState(false));
 			window.location.href = '/profile';
 		} catch (e) {
-			console.log(e);
+			console.error(
+				`Failed to update venue ${id}`,
+				e
+			);
+			dispatch(setError(true, e.message));
+			dispatch(setLoadingState(false));
 		}
 	};
 export const fetchSingleBooking =
@@ -205,6 +246,7 @@ export const fetchSingleBooking =
 
 export const bookVenue =
 	(venueData) => async (dispatch) => {
+		dispatch(setLoadingState(true));
 		try {
 			const response = await fetch(
 				`https://nf-api.onrender.com/api/v1/holidaze/bookings`,
@@ -217,25 +259,54 @@ export const bookVenue =
 					body: JSON.stringify(venueData),
 				}
 			);
+
+			if (!response.ok) {
+				throw new Error('Failed to book venue');
+			}
+
 			const data = await response.json();
 			console.log(data);
 			dispatch(SET_BOOK_VENUE(data));
+			dispatch(setLoadingState(false));
 		} catch (e) {
+			console.error(`Failed to book venue`, e);
 			dispatch(setError(true, e.message));
+			dispatch(setLoadingState(false));
 		}
 	};
 
-export const deleteBooking = (id) => {
-	fetch(
-		`https://nf-api.onrender.com/api/v1/holidaze/bookings/${id}`,
-		{
-			method: 'DELETE',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${accessToken}`,
-			},
+export const deleteBooking =
+	(id) => async (dispatch) => {
+		dispatch(setLoadingState(true));
+		try {
+			const response = await fetch(
+				`https://nf-api.onrender.com/api/v1/holidaze/bookings/${id}`,
+				{
+					method: 'DELETE',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${accessToken}`,
+					},
+				}
+			);
+
+			if (!response.ok) {
+				throw new Error(
+					`Failed to delete booking ${id}`
+				);
+			}
+
+			// Remove booking from the state
+			dispatch(removeBooking());
+
+			window.location.href = '/profile';
+		} catch (e) {
+			console.error(
+				`Failed to delete booking ${id}`,
+				e
+			);
+			dispatch(setError(true, e.message));
+		} finally {
+			dispatch(setLoadingState(false));
 		}
-	).then(() => {
-		window.location.href = '/profile';
-	});
-};
+	};

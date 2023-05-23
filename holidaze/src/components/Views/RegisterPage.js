@@ -123,10 +123,16 @@ export default function AuthForm({ mode }) {
 						<p className="mt-2 text-center text-sm text-gray-600">
 							Or{' '}
 							<Link
-								to="/login"
+								to={
+									mode === 'register'
+										? '/login'
+										: '/register'
+								}
 								className="font-medium text-indigo-600 hover:text-indigo-500"
 							>
-								Sign in
+								{mode === 'register'
+									? 'Sign in'
+									: 'Register here'}
 							</Link>
 						</p>
 					</div>

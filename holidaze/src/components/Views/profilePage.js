@@ -301,8 +301,6 @@ const ProfilePage = () => {
 											{venue.location.address},{' '}
 											{venue.location.city},{' '}
 											{venue.location.zip},{' '}
-											{venue.location.country},{' '}
-											{venue.location.continent}
 										</p>
 										<p className="font-paragraph text-sm px-2 my-2">
 											Price: ${venue.price}

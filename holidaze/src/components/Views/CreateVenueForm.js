@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { newVenue } from '../../store/modules/venueSlice';
+
 const CreateVenueForm = () => {
 	const dispatch = useDispatch();
 	const validationSchema = Yup.object().shape({
@@ -47,6 +48,7 @@ const CreateVenueForm = () => {
 	const [mediaArray, setMediaArray] = useState(
 		[]
 	);
+
 	const handleSubmit = async (values) => {
 		dispatch(newVenue(values));
 	};
@@ -103,6 +105,7 @@ const CreateVenueForm = () => {
 			dispatch(newVenue(venueData));
 		},
 	});
+
 	function pushToMediaArray() {
 		const mediaValue =
 			document.getElementById('media').value;

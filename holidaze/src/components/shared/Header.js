@@ -10,12 +10,18 @@ function Header({ isLoggedIn, onLogout }) {
 	const [showMenu, setShowMenu] = useState(false);
 	const [avatar, setAvatar] = useState(null);
 	const [userName, setUserName] = useState('');
+	const [isVenueManager, setIsVenueManager] =
+		useState(false);
 
 	useEffect(() => {
 		if (isLoggedIn) {
 			setAvatar(localStorage.getItem('avatar'));
 			setUserName(
 				localStorage.getItem('userName')
+			);
+			setIsVenueManager(
+				localStorage.getItem('venueManager') ===
+					'true'
 			);
 		}
 	}, [isLoggedIn]);
@@ -34,7 +40,7 @@ function Header({ isLoggedIn, onLogout }) {
 				<div className="flex justify-between items-center">
 					<Link to="/">
 						<img
-							className="w-auto h-auto max-w-full max-h-12 md:max-w-none md:max-h-12"
+							className="w-auto h-auto max-w-full max-h-12 md:max-h-16 lg:max-h-20"
 							src={Logo}
 							alt="Holidaze logo"
 						/>
@@ -55,7 +61,7 @@ function Header({ isLoggedIn, onLogout }) {
 					)}
 					<button
 						onClick={toggleMenu}
-						className="md:hidden focus:outline-none"
+						className="md:hidden focus:outline-none text-gray-600"
 					>
 						{showMenu ? (
 							<FaTimes className="w-6 h-6 text-gray-600" />
@@ -67,7 +73,7 @@ function Header({ isLoggedIn, onLogout }) {
 				<div
 					className={`${
 						showMenu ? 'block' : 'hidden'
-					} md:block md:items-center mt-4 md:mt-0`}
+					} md:flex md:items-center mt-4 md:mt-0`}
 				>
 					<Link
 						to="/venues"
@@ -83,7 +89,7 @@ function Header({ isLoggedIn, onLogout }) {
 					>
 						Bookings
 					</Link>
-					{isLoggedIn ? (
+					{isLoggedIn && isVenueManager && (
 						<>
 							<Link
 								to={`/profile`}
@@ -110,7 +116,29 @@ function Header({ isLoggedIn, onLogout }) {
 								Logout
 							</Link>
 						</>
-					) : (
+					)}
+					{isLoggedIn && !isVenueManager && (
+						<>
+							<Link
+								to={`/profile`}
+								onClick={handleLinkClick}
+								className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-white hover:text-gray-800 hover:bg-white transition-colors duration-300 px-4 py-2 rounded-md"
+							>
+								Profile
+							</Link>
+							<Link
+								to="/"
+								onClick={() => {
+									handleLinkClick();
+									onLogout();
+								}}
+								className="block mt-4 md:inline-block md:mt-0 mx-4 px-4 py-2 text-white font-bold bg-red-500 hover:bg-red-600 rounded-md transition-colors duration-300 shadow-md"
+							>
+								Logout
+							</Link>
+						</>
+					)}
+					{!isLoggedIn && (
 						<>
 							<Link
 								to="/login"

@@ -3,7 +3,11 @@ import React, {
 	useEffect,
 } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import {
+	useDispatch,
+	useSelector,
+} from 'react-redux';
+import { fetchSingleVenue } from '../../store/modules/venueSlice';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
 import { Carousel } from 'react-responsive-carousel';
 import {
@@ -17,39 +21,28 @@ import {
 import { Link } from 'react-router-dom';
 
 const BookNowButton = () => (
-	<button className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded">
+	<button className="inline-block mt-4 mb-4 bg-blue-500 text-white font-semibold text-xl py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-1">
 		Book now
 	</button>
 );
 const BackToHomepageButton = () => (
 	<Link to="/">
-		<button className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded">
+		<button className="inline-block mt-4 mb-4 bg-blue-500 text-white font-semibold text-xl py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors shadow-md hover:shadow-lg transform hover:-translate-y-1">
 			Back to Homepage
 		</button>
 	</Link>
 );
 const VenueDetail = () => {
 	const { id } = useParams();
-	const [venue, setVenue] = useState(null);
+	const dispatch = useDispatch();
+	const venue = useSelector(
+		(state) => state.venues.singleVenue
+	);
 	const [showMore, setShowMore] = useState(false);
 
 	useEffect(() => {
-		const fetchVenue = async () => {
-			try {
-				const response = await axios.get(
-					`https://nf-api.onrender.com/api/v1/holidaze/venues/${id}`
-				);
-				setVenue(response.data);
-			} catch (error) {
-				console.error(
-					'Error fetching venue data:',
-					error
-				);
-			}
-		};
-
-		fetchVenue();
-	}, [id]);
+		dispatch(fetchSingleVenue(id));
+	}, [dispatch, id]);
 	const toggleShowMore = () => {
 		setShowMore(!showMore);
 	};
