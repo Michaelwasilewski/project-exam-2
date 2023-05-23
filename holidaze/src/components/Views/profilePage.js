@@ -155,45 +155,39 @@ const ProfilePage = () => {
 		).toLocaleDateString(undefined, options);
 	};
 	return (
-		<div className="rounded-lg shadow p-6">
-			<div className="flex flex-col justify-center items-center mb-6 pt-16 pb-16  text-white">
-				<h2 className="text-4xl font-bold mb-6">
-					Profile
-				</h2>
-				<div className="bg-white shadow-lg rounded-lg p-6 w-full md:w-2/3 flex flex-col md:flex-row md:space-x-6 space-y-4 md:space-y-0 text-black">
-					<div className="md:w-1/2">
-						<div className="relative w-32 h-32 mx-auto">
-							<img
-								src={userAvatar}
-								alt="user avatar"
-								className="w-full h-full rounded-full object-cover"
-							/>
+		<div className="rounded-lg shadow p-6 ">
+			<div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-14 px-10 md:px-20 mb-10 rounded-lg shadow-lg">
+				<h1 className="text-4xl md:text-5xl font-extrabold mb-5">
+					Your Profile
+				</h1>
+				<div className="grid md:grid-cols-2 gap-6 bg-white p-6 rounded-lg shadow-lg">
+					<div>
+						<div className="flex justify-center md:justify-start">
+							<div className="relative w-24 h-24 md:w-32 md:h-32">
+								<img
+									src={userAvatar}
+									alt="user avatar"
+									className="w-full h-full rounded-full object-cover border-2 border-indigo-600"
+								/>
+							</div>
 						</div>
-						<div className="text-center mt-4">
-							<p className="text-lg font-semibold mb-1">
-								<span className="text-gray-500">
-									Name:
-								</span>{' '}
+						<div className="text-center md:text-left mt-4">
+							<p className="text-xl md:text-2xl font-bold mb-1 text-gray-600">
 								{userDetails?.name}
 							</p>
-							<p className="text-lg font-semibold mb-1">
-								<span className="text-gray-500">
-									Email:
-								</span>{' '}
+							<p className="text-md md:text-lg text-gray-600 mb-1">
 								{userDetails?.email}
 							</p>
-							<p className="text-lg font-semibold">
-								<span className="text-gray-500">
-									Venue Manager:
-								</span>{' '}
+							<p className="text-md md:text-lg text-gray-600">
+								Venue Manager:{' '}
 								{userDetails?.venueManager
 									? 'Yes'
 									: 'No'}
 							</p>
 						</div>
 					</div>
-					<div className="md:w-1/2">
-						<form className="flex flex-col space-y-2">
+					<div>
+						<form className="flex flex-col space-y-4">
 							<label
 								htmlFor="avatar"
 								className="font-semibold text-gray-600"
@@ -217,13 +211,19 @@ const ProfilePage = () => {
 							<button
 								onClick={handleChangeAvatar}
 								type="button"
-								className="mt-2 px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600 self-start"
+								className="mt-2 px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
 							>
 								Change Avatar
 							</button>
 						</form>
 					</div>
 				</div>
+				<p className="text-lg md:text-xl font-light mt-6">
+					Manage your venues and bookings with
+					ease. Feel free to view, add, or delete
+					any venues or bookings as per your
+					requirement. You are in control!
+				</p>
 			</div>
 
 			<div className="flex justify-around">

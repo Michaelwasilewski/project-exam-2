@@ -1,7 +1,4 @@
-import React, {
-	useState,
-	useEffect,
-} from 'react';
+import React, { useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import { fetchVenues } from '../store/modules/venueSlice';

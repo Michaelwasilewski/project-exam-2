@@ -82,13 +82,7 @@ function Header({ isLoggedIn, onLogout }) {
 					>
 						Venues
 					</Link>
-					<Link
-						to="/my-bookings"
-						onClick={handleLinkClick}
-						className="block mt-4 md:inline-block md:mt-0 mx-4 font-medium text-white hover:text-gray-800 hover:bg-white transition-colors duration-300 px-4 py-2 rounded-md"
-					>
-						Bookings
-					</Link>
+
 					{isLoggedIn && isVenueManager && (
 						<>
 							<Link
