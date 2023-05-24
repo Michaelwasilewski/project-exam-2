@@ -8,11 +8,19 @@ const Venue = ({ venue }) => {
 	return (
 		<div className="bg-gray-800 rounded-sm shadow-lg overflow-hidden p-4 my-2 mx-2">
 			<div className="relative">
-				<img
-					src={venue.media[0]}
-					alt={venue.name}
-					className="w-full h-96 object-cover"
-				/>
+				{venue.media.length > 0 ? (
+					<img
+						src={venue.media[0]}
+						alt={venue.name}
+						className="w-full h-96 object-cover"
+					/>
+				) : (
+					<img
+						src="https://via.placeholder.com/400x300?text=Placeholder+Image"
+						alt="Placeholder"
+						className="w-full h-96 object-cover"
+					/>
+				)}
 				<div className="absolute bottom-0 left-0 p-4 bg-black bg-opacity-50">
 					<h3 className="text-2xl font-bold text-white">
 						{venue.name}

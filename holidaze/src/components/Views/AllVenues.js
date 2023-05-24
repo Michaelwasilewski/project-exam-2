@@ -251,7 +251,11 @@ const VenuePage = () => {
 								<div
 									className="w-full h-48 bg-cover bg-center rounded-lg mb-4"
 									style={{
-										backgroundImage: `url(${venue.media[0]})`,
+										backgroundImage: `url(${
+											venue.media.length > 0
+												? venue.media[0]
+												: 'https://via.placeholder.com/400x300?text=Placeholder+Image'
+										})`,
 										objectFit: 'cover',
 									}}
 								></div>

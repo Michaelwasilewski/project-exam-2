@@ -22,7 +22,7 @@ const CreateVenueForm = () => {
 		media: Yup.string()
 			.url('Invalid URL')
 			.matches(
-				/\.(gif|jpe?g|png)(\?.*)?$/i,
+				/\.(gif|jpe?g|png)(\?.*)*$/i,
 				'Invalid image URL'
 			),
 		price: Yup.number().required('Required'),
@@ -56,7 +56,6 @@ const CreateVenueForm = () => {
 		initialValues: {
 			name: '',
 			description: '',
-			media: [],
 			price: 1,
 			maxGuests: 1,
 			rating: 5,
@@ -107,8 +106,7 @@ const CreateVenueForm = () => {
 	});
 
 	function pushToMediaArray() {
-		const mediaValue =
-			document.getElementById('media').value;
+		const mediaValue = formik.values.mediaUrl;
 		const urlRegex =
 			/(ftp|http|https):\/\/[^ "]+$/;
 		if (urlRegex.test(mediaValue)) {
@@ -117,7 +115,7 @@ const CreateVenueForm = () => {
 				mediaValue,
 			];
 			setMediaArray(newMediaArray);
-			document.getElementById('media').value = '';
+			formik.setFieldValue('mediaUrl', '');
 		} else {
 			return null;
 		}
@@ -142,6 +140,10 @@ const CreateVenueForm = () => {
 						<h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
 							Create a listing
 						</h2>
+						<p className="mt-2 text-gray-600">
+							Fill in the details below to create
+							a new venue listing.
+						</p>
 					</div>
 					<form
 						onSubmit={formik.handleSubmit}
@@ -191,7 +193,7 @@ const CreateVenueForm = () => {
 						{/* Gallery field */}
 						<div className="flex flex-col items-start">
 							<label htmlFor="gallery">
-								Gallery
+								Images for the venue
 							</label>
 							{mediaArray && (
 								<div className="flex gap-1 flex-wrap mt-4">
@@ -221,12 +223,13 @@ const CreateVenueForm = () => {
 							<div className="w-full flex gap-4 mt-4">
 								<input
 									type="text"
-									name="media"
+									name="mediaUrl"
 									id="media"
 									placeholder="Enter the gallery URL"
 									className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									onChange={formik.handleChange}
 									onBlur={formik.handleBlur}
+									value={formik.values.mediaUrl}
 								/>
 							</div>
 							{formik.touched.media &&
@@ -291,70 +294,77 @@ const CreateVenueForm = () => {
 						</div>
 
 						{/* Amenities checkboxes */}
-						<div className="grid grid-cols-2 gap-16">
-							<div className="flex items-center">
-								<input
-									type="checkbox"
-									name="wifi"
-									id="wifi"
-									onChange={formik.handleChange}
-									onBlur={formik.handleBlur}
-									value={formik.values.wifi}
-								/>
-								<label
-									htmlFor="wifi"
-									className="ml-2"
-								>
-									Wifi
-								</label>
-							</div>
-							<div className="flex items-center">
-								<input
-									type="checkbox"
-									name="pets"
-									id="pets"
-									onChange={formik.handleChange}
-									onBlur={formik.handleBlur}
-									value={formik.values.pets}
-								/>
-								<label
-									htmlFor="pets"
-									className="ml-2"
-								>
-									Pets
-								</label>
-							</div>
-							<div className="flex items-center">
-								<input
-									type="checkbox"
-									name="breakfast"
-									id="breakfast"
-									onChange={formik.handleChange}
-									onBlur={formik.handleBlur}
-									value={formik.values.breakfast}
-								/>
-								<label
-									htmlFor="breakfast"
-									className="ml-2"
-								>
-									Breakfast
-								</label>
-							</div>
-							<div className="flex items-center">
-								<input
-									type="checkbox"
-									name="parking"
-									id="parking"
-									onChange={formik.handleChange}
-									onBlur={formik.handleBlur}
-									value={formik.values.parking}
-								/>
-								<label
-									htmlFor="parking"
-									className="ml-2"
-								>
-									Parking
-								</label>
+						<div>
+							<label htmlFor="facilities">
+								Facilities
+							</label>
+							<div className="grid grid-cols-2 gap-16">
+								<div className="flex items-center">
+									<input
+										type="checkbox"
+										name="wifi"
+										id="wifi"
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+										value={formik.values.wifi}
+									/>
+									<label
+										htmlFor="wifi"
+										className="ml-2"
+									>
+										Wifi
+									</label>
+								</div>
+								<div className="flex items-center">
+									<input
+										type="checkbox"
+										name="pets"
+										id="pets"
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+										value={formik.values.pets}
+									/>
+									<label
+										htmlFor="pets"
+										className="ml-2"
+									>
+										Pets
+									</label>
+								</div>
+								<div className="flex items-center">
+									<input
+										type="checkbox"
+										name="breakfast"
+										id="breakfast"
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+										value={
+											formik.values.breakfast
+										}
+									/>
+									<label
+										htmlFor="breakfast"
+										className="ml-2"
+									>
+										Breakfast
+									</label>
+								</div>
+								<div className="flex items-center">
+									<input
+										type="checkbox"
+										name="parking"
+										id="parking"
+										onChange={formik.handleChange}
+										onBlur={formik.handleBlur}
+										value={formik.values.parking}
+									/>
+									<label
+										htmlFor="parking"
+										className="ml-2"
+									>
+										Parking
+									</label>
+								</div>
 							</div>
 						</div>
 
