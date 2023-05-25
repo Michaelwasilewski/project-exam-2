@@ -73,9 +73,9 @@ const EditVenueForm = () => {
 		}
 	}, [venue]);
 
-	const handleSubmit = async (values) => {
-		dispatch(updateVenue(values));
-	};
+	// const handleSubmit = async (values) => {
+	// 	dispatch(updateVenue(values));
+	// };
 	const formik = useFormik({
 		initialValues: {
 			name: venue?.name || '',
@@ -93,6 +93,7 @@ const EditVenueForm = () => {
 			location: {
 				address: venue?.location?.address || '',
 				city: venue?.location?.city || '',
+				zip: venue?.location?.zip || '',
 				country: venue?.location?.country || '',
 				continent:
 					venue?.location?.continent || '',
@@ -428,13 +429,15 @@ const EditVenueForm = () => {
 							</label>
 							<input
 								type="text"
-								name="address"
+								name="location.address" // Update the name attribute
 								id="address"
 								placeholder="Enter the address"
 								className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
-								value={formik.values.address}
+								value={
+									formik.values.location.address
+								} // Update the value attribute
 							/>
 							{formik.touched.address &&
 							formik.errors.address ? (
@@ -448,13 +451,15 @@ const EditVenueForm = () => {
 							<label htmlFor="city">City</label>
 							<input
 								type="text"
-								name="city"
+								name="location.city"
 								id="city"
 								placeholder="Enter the city"
 								className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
-								value={formik.values.city}
+								value={
+									formik.values.location.city
+								}
 							/>
 							{formik.touched.city &&
 							formik.errors.city ? (
@@ -465,21 +470,25 @@ const EditVenueForm = () => {
 						</div>
 
 						<div className="flex flex-col">
-							<label htmlFor="state">State</label>
+							<label htmlFor="state">
+								Country
+							</label>
 							<input
 								type="text"
-								name="state"
+								name="location.country"
 								id="state"
 								placeholder="Enter the state"
 								className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
-								value={formik.values.state}
+								value={
+									formik.values.location.country
+								}
 							/>
-							{formik.touched.state &&
-							formik.errors.state ? (
+							{formik.touched.country &&
+							formik.errors.country ? (
 								<div className="text-red-600">
-									{formik.errors.state}
+									{formik.errors.country}
 								</div>
 							) : null}
 						</div>
@@ -488,13 +497,13 @@ const EditVenueForm = () => {
 							<label htmlFor="zip">Zip</label>
 							<input
 								type="text"
-								name="zip"
+								name="location.zip"
 								id="zip"
 								placeholder="Enter the zip code"
 								className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
-								value={formik.values.zip}
+								value={formik.values.location.zip}
 							/>
 							{formik.touched.zip &&
 							formik.errors.zip ? (

@@ -87,6 +87,46 @@ const VenuesCarousel = () => {
 					))}
 				</Slider>
 			</div>
+			<div className="text-center">
+				<h2 className="text-3xl font-bold text-white mb-4">
+					Testimonials
+				</h2>
+				<div className="flex flex-wrap justify-center items-center">
+					<div className="max-w-sm mx-auto rounded-lg shadow-md p-6 m-4">
+						<p className="text-gray-900 text-lg mb-4">
+							"I had an amazing experience at one
+							of the venues. The staff was
+							friendly and the atmosphere was
+							fantastic. Highly recommended!"
+						</p>
+						<p className="text-gray-600 font-bold">
+							- John Doe
+						</p>
+					</div>
+					<div className="max-w-sm mx-auto rounded-lg shadow-md p-6 m-4">
+						<p className="text-gray-900 text-lg mb-4">
+							"The venues are top-notch with great
+							facilities. I organized an event
+							there, and everything went smoothly.
+							Great job!"
+						</p>
+						<p className="text-gray-600 font-bold">
+							- Jane Smith
+						</p>
+					</div>
+					<div className="max-w-sm mx-auto rounded-lg shadow-md p-6 m-4">
+						<p className="text-gray-900 text-lg mb-4">
+							"I attended a concert at one of the
+							venues, and it was an incredible
+							experience. The sound quality and
+							ambiance were outstanding!"
+						</p>
+						<p className="text-gray-600 font-bold">
+							- Mike Johnson
+						</p>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 };

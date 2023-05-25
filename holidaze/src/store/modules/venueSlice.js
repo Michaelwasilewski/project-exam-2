@@ -43,11 +43,10 @@ const venueSlice = createSlice({
 			state.createVenue = action.payload;
 		},
 		SET_DELETE_VENUE: (state, action) => {
-			state.createVenue = action.payload;
+			state.deleteVenue = action.payload;
 		},
-
 		SET_UPDATE_VENUE: (state, action) => {
-			state.createVenue = action.payload;
+			state.updateVenue = action.payload;
 		},
 		SET_SINGLE_BOOKING: (state, action) => {
 			state.singleBooking = action.payload;
