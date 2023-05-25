@@ -13,7 +13,7 @@ import { setLoadingState } from '../../store/modules/loaderSlice';
 import { format } from 'date-fns';
 import Calendar from '../Calendar';
 import Logo from '../../img/holidazelogo.png';
-import bookingForm from '../../img/bookingForm.jpg';
+
 const CreateBooking = () => {
 	const { id } = useParams();
 	const [formSubmitted, setFormSubmitted] =

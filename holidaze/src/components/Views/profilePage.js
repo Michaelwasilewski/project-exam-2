@@ -306,13 +306,13 @@ const ProfilePage = () => {
 											Price: ${venue.price}
 										</p>
 									</div>
-									<div className="flex justify-center md:items-end">
+									<div className="flex justify-center md:items-end space-x-4 mt-4">
 										<Link
 											to={`/venues/${venue.id}/edit`}
 										>
 											<button
 												type="button"
-												className="flex w-32 md:mx-auto font-header justify-center rounded-md bg-green-500 hover:bg-green-600 px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm my-4 ml-2"
+												className="flex w-32 md:mx-auto font-header justify-center rounded-md bg-green-500 hover:bg-green-600 px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm"
 											>
 												Update
 											</button>
@@ -323,7 +323,7 @@ const ProfilePage = () => {
 													venue.id
 												)
 											}
-											className="flex w-32 md:mx-auto font-header justify-center rounded-md bg-red-500 hover:bg-red-600 px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm my-4 ml-2"
+											className="flex w-32 md:mx-auto font-header justify-center rounded-md bg-red-500 hover:bg-red-600 px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm"
 										>
 											Delete
 										</button>
