@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
-import { fetchVenues } from '../store/modules/venueSlice';
+import { fetchVenues } from '../../store/modules/venueSlice';
 import {
 	useDispatch,
 	useSelector,
 } from 'react-redux';
 
 import 'slick-carousel/slick/slick-theme.css';
-import Venue from './Venue';
-import HeroSection from './HeroSection';
+import Venue from '../Venue';
+import HeroSection from '../HeroSection';
 import {
 	FaChevronLeft,
 	FaChevronRight,

@@ -20,12 +20,26 @@ function HeroSection() {
 					Discover and book amazing hotels and
 					venues around the world
 				</p>
-				<NavLink
-					to="/venues"
-					className="inline-block bg-blue-500 text-white font-lato font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors"
-				>
-					Browse Venues
-				</NavLink>
+				<div className="flex gap-4">
+					<NavLink
+						to="/venues"
+						className="inline-block bg-blue-500 text-white font-lato font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors"
+					>
+						Browse Venues
+					</NavLink>
+					<NavLink
+						to="/register"
+						className="inline-block bg-blue-500 text-white font-lato font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors"
+					>
+						Register
+					</NavLink>
+				</div>
+				<p className="text-gray-300 text-md mt-4">
+					Are you a venue owner? Join us as a
+					venue manager and start showcasing and
+					renting out your venues to travelers
+					around the world.
+				</p>
 			</div>
 		</div>
 	);

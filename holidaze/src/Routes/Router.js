@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AuthForm from '../components/Views/RegisterPage';
-import VenuesCarousel from '../components/VenuesCarousel';
+import VenuesCarousel from '../components/Views/VenuesCarousel';
 import CreateVenueForm from '../components/Views/CreateVenueForm';
 import VenueDetail from '../components/Views/VenueDetail';
 import Bookings from '../components/Views/CreateBooking';
@@ -52,6 +52,11 @@ const Router = () => {
 				<Route
 					path="/venues/:id/edit"
 					element={<UpdateVenue />}
+				/>
+
+				<Route
+					path="*"
+					element={<AccessDenied />}
 				/>
 			</Routes>
 		</>

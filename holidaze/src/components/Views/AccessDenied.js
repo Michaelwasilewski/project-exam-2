@@ -15,7 +15,7 @@ const AccessDenied = () => {
 					Access Denied
 				</h1>
 				<p className="mb-4 text-lg text-gray-600">
-					You must be registered as a venue
+					TIP: You must be registered as a venue
 					manager to create a venue. Registering
 					as a venue manager will allow you to
 					access a host of benefits.

@@ -40,7 +40,7 @@ function Header({ isLoggedIn, onLogout }) {
 				<div className="flex justify-between items-center">
 					<Link to="/">
 						<img
-							className="w-auto h-auto max-w-full max-h-12 md:max-h-16 lg:max-h-20"
+							className="w-auto h-auto max-w-full max-h-12 "
 							src={Logo}
 							alt="Holidaze logo"
 						/>

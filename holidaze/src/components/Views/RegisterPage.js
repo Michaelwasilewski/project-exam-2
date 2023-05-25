@@ -206,10 +206,10 @@ export default function AuthForm({ mode }) {
 													Select Venue Manager
 												</option>
 												<option value="true">
-													True
+													Yes
 												</option>
 												<option value="false">
-													False
+													No
 												</option>
 											</Field>
 										</div>

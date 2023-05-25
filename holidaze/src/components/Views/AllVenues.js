@@ -66,25 +66,25 @@ const VenuePage = () => {
 		setSortOption(event.target.value);
 	};
 
-	// useEffect(() => {
-	// 	const sorted = [...filteredVenues].sort(
-	// 		(a, b) => {
-	// 			switch (sortOption) {
-	// 				case 'highest-rating':
-	// 					return b.rating - a.rating;
-	// 				case 'lowest-rating':
-	// 					return a.rating - b.rating;
-	// 				case 'lowest-price':
-	// 					return a.price - b.price;
-	// 				case 'highest-price':
-	// 					return b.price - a.price;
-	// 				default:
-	// 					return 0;
-	// 			}
-	// 		}
-	// 	);
-	// 	setFilteredVenues(sorted);
-	// }, [sortOption]);
+	useEffect(() => {
+		const sorted = [...filteredVenues].sort(
+			(a, b) => {
+				switch (sortOption) {
+					case 'highest-rating':
+						return b.rating - a.rating;
+					case 'lowest-rating':
+						return a.rating - b.rating;
+					case 'lowest-price':
+						return a.price - b.price;
+					case 'highest-price':
+						return b.price - a.price;
+					default:
+						return 0;
+				}
+			}
+		);
+		setFilteredVenues(sorted);
+	}, [sortOption]);
 
 	const sortedVenues = useSelector((state) =>
 		[...state.venues?.venues]?.sort((a, b) => {
@@ -141,7 +141,6 @@ const VenuePage = () => {
 		}
 		setFilteredVenues(filtered);
 	};
-	console.log(totalVenues);
 	return (
 		<div>
 			<div className="hero-section bg-gradient-to-r from-blue-500 to-indigo-600 text-white min-h-fit">
