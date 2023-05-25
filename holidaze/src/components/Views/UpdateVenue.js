@@ -1,9 +1,17 @@
-import { useState } from 'react';
-import Logo from '../../img/holidazelogo.png';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import {
+	useDispatch,
+	useSelector,
+} from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { newVenue } from '../../store/modules/venueSlice';
+import {
+	fetchSingleVenue,
+	updateVenue,
+} from '../../store/modules/venueSlice';
+import { setLoadingState } from '../../store/modules/loaderSlice';
+import { useParams } from 'react-router-dom';
+import Logo from '../../img/holidazelogo.png';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string()
@@ -44,39 +52,55 @@ const validationSchema = Yup.object().shape({
 	zip: Yup.string().optional('Optional'),
 });
 
-const CreateVenueForm = () => {
+const EditVenueForm = () => {
 	const dispatch = useDispatch();
-
-	const [mediaArray, setMediaArray] = useState(
-		[]
+	let { id } = useParams();
+	const venue = useSelector(
+		(state) => state.venues.singleVenue
 	);
 
+	useEffect(() => {
+		if (!venue) {
+			dispatch(fetchSingleVenue(id));
+		}
+	}, [dispatch, id, venue]);
+	const [mediaArray, setMediaArray] = useState(
+		venue ? venue.media : []
+	);
+	useEffect(() => {
+		if (venue && venue.media) {
+			setMediaArray(venue.media);
+		}
+	}, [venue]);
+
 	const handleSubmit = async (values) => {
-		dispatch(newVenue(values));
+		dispatch(updateVenue(values));
 	};
 	const formik = useFormik({
 		initialValues: {
-			name: '',
-			description: '',
-			price: 1,
-			maxGuests: 1,
+			name: venue?.name || '',
+			description: venue?.description || '',
+			price: venue?.price || 0,
+			maxGuests: venue?.maxGuests || 1,
 			rating: 5,
 			meta: {
-				wifi: false,
-				parking: false,
-				breakfast: false,
-				pets: false,
+				wifi: venue?.meta?.wifi || false,
+				parking: venue?.meta?.parking || false,
+				breakfast:
+					venue?.meta?.breakfast || false,
+				pets: venue?.meta?.pets || false,
 			},
 			location: {
-				address: '',
-				city: '',
-				zip: '',
-				country: '',
-				continent: '',
+				address: venue?.location?.address || '',
+				city: venue?.location?.city || '',
+				country: venue?.location?.country || '',
+				continent:
+					venue?.location?.continent || '',
 				lat: 0,
 				lng: 0,
 			},
 		},
+		enableReinitialize: true,
 		validationSchema,
 		onSubmit: (values) => {
 			const venueData = {
@@ -87,25 +111,51 @@ const CreateVenueForm = () => {
 				maxGuests: values.maxGuests,
 				rating: 5,
 				meta: {
-					wifi: values.wifi,
-					parking: values.parking,
-					breakfast: values.breakfast,
-					pets: values.pets,
+					wifi: values.meta.wifi,
+					parking: values.meta.parking,
+					breakfast: values.meta.breakfast,
+					pets: values.meta.pets,
 				},
 				location: {
-					address: values.address,
-					city: values.city,
-					zip: values.zip,
-					country: values.country,
-					continent: values.continent,
+					address: values.location.address,
+					city: values.location.city,
+					zip: values.location.zip,
+					country: values.location.country,
+					continent: values.location.continent,
 					lat: 0,
 					lng: 0,
 				},
 			};
 			console.log(venueData);
-			dispatch(newVenue(venueData));
+			console.log('form is submitted');
+			dispatch(setLoadingState(true));
+
+			dispatch(updateVenue(id, venueData))
+				.then(() => {
+					window.scrollTo(0, 0);
+					dispatch(setLoadingState(false));
+				})
+				.catch((error) => {
+					console.log(error);
+					dispatch(setLoadingState(false));
+				});
 		},
 	});
+	useEffect(() => {
+		if (venue) {
+			setMediaArray(venue.media);
+		}
+	}, [venue]);
+
+	useEffect(() => {
+		if (id) {
+			dispatch(fetchSingleVenue(id)).catch(
+				(error) => {
+					console.log(error);
+				}
+			);
+		}
+	}, [dispatch, id]);
 
 	function pushToMediaArray() {
 		const mediaValue = formik.values.mediaUrl;
@@ -130,7 +180,7 @@ const CreateVenueForm = () => {
 		setMediaArray(newMediaArray);
 	}
 	return (
-		<div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white min-h-full">
+		<div className="hero-section bg-gradient-to-r from-blue-500 to-indigo-600 text-white min-h-full">
 			<div className="flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
 				<div className="w-full max-w-2xl space-y-8 bg-white rounded-lg shadow-lg p-8">
 					<div className="text-center">
@@ -140,11 +190,11 @@ const CreateVenueForm = () => {
 							alt="Holidaze Logo"
 						/>
 						<h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
-							Create a listing
+							Update a listing
 						</h2>
 						<p className="mt-2 text-gray-600">
-							Fill in the details below to create
-							a new venue listing.
+							Fill in the details below to update
+							your venue listing.
 						</p>
 					</div>
 					<form
@@ -157,6 +207,7 @@ const CreateVenueForm = () => {
 								type="text"
 								name="name"
 								id="name"
+								autoComplete="name"
 								placeholder="Enter the title"
 								className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								onChange={formik.handleChange}
@@ -457,7 +508,7 @@ const CreateVenueForm = () => {
 							type="submit"
 							className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
 						>
-							Publish Venue
+							Update Venue
 						</button>
 					</form>
 				</div>
@@ -466,4 +517,4 @@ const CreateVenueForm = () => {
 	);
 };
 
-export default CreateVenueForm;
+export default EditVenueForm;

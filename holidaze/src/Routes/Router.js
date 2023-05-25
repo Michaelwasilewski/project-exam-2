@@ -8,6 +8,7 @@ import Bookings from '../components/Views/CreateBooking';
 import VenuePage from '../components/Views/AllVenues';
 import ProfilePage from '../components/Views/profilePage';
 import AccessDenied from '../components/Views/AccessDenied';
+import UpdateVenue from '../components/Views/UpdateVenue';
 const Router = () => {
 	return (
 		<>
@@ -47,6 +48,10 @@ const Router = () => {
 				<Route
 					path="/profile"
 					element={<ProfilePage />}
+				/>
+				<Route
+					path="/venues/:id/edit"
+					element={<UpdateVenue />}
 				/>
 			</Routes>
 		</>

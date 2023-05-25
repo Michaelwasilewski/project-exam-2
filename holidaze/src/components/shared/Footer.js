@@ -13,7 +13,7 @@ const Footer = () => {
 						<ul className="list-none">
 							<li className="mb-2">
 								<Link
-									to="/browse-destinations"
+									to="/venues"
 									className="text-gray-400 hover:text-gray-200 block font-medium"
 								>
 									Browse Destinations
@@ -21,7 +21,7 @@ const Footer = () => {
 							</li>
 							<li className="mb-2">
 								<Link
-									to="/my-bookings"
+									to="/profile"
 									className="text-gray-400 hover:text-gray-200 block font-medium"
 								>
 									My Bookings
@@ -29,7 +29,7 @@ const Footer = () => {
 							</li>
 							<li className="mb-2">
 								<Link
-									to="/my-venues"
+									to="/profile"
 									className="text-gray-400 hover:text-gray-200 block font-medium"
 								>
 									My Venues
@@ -37,7 +37,7 @@ const Footer = () => {
 							</li>
 							<li className="mb-2">
 								<Link
-									to="/add-venue"
+									to="/create-venue"
 									className="text-white bg-red-600 hover:bg-red-700 block px-3 py-2 rounded-md text-base font-medium"
 								>
 									Add Venue
@@ -144,8 +144,8 @@ const Footer = () => {
 				</div>
 				<div className="mt-8 border-t border-gray-200 pt-8">
 					<p className="text-base text-gray-500">
-						&copy; 2023 Your Company. All rights
-						reserved.
+						&copy; 2023 Holidaze. All rights
+						reserved. (School Project)
 					</p>
 				</div>
 			</div>

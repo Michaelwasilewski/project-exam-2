@@ -307,6 +307,16 @@ const ProfilePage = () => {
 										</p>
 									</div>
 									<div className="flex justify-center md:items-end">
+										<Link
+											to={`/venues/${venue.id}/edit`}
+										>
+											<button
+												type="button"
+												className="flex w-32 md:mx-auto font-header justify-center rounded-md bg-green-500 hover:bg-green-600 px-2 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm my-4 ml-2"
+											>
+												Update
+											</button>
+										</Link>
 										<button
 											onClick={() =>
 												handleDeleteVenue(

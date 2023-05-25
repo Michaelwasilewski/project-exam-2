@@ -276,12 +276,21 @@ export default function AuthForm({ mode }) {
 									</div>
 
 									<div className="text-sm">
-										<Link
-											to="#"
-											className="font-medium text-indigo-600 hover:text-indigo-500"
-										>
-											Forgot your password?
-										</Link>
+										{mode === 'register' ? (
+											<Link
+												to="/login"
+												className="font-medium text-indigo-600 hover:text-indigo-500"
+											>
+												Sign in
+											</Link>
+										) : (
+											<Link
+												to="#"
+												className="font-medium text-indigo-600 hover:text-indigo-500"
+											>
+												Forgot your password?
+											</Link>
+										)}
 									</div>
 								</div>
 								<ErrorMessage
