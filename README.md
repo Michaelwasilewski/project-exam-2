@@ -58,10 +58,8 @@ The Holidaze Accommodation Booking Application utilizes the following technologi
 To install and set up the Holidaze Accommodation Booking Application, follow the steps below:
 
 1. Clone the repository from GitHub: 
-Certainly! Here's the README.md file written in raw format:
 
-markdown
-Copy code
+
 # Holidaze Accommodation Booking Application
 
 Welcome to the Holidaze Accommodation Booking Application! This application is a modern front-end solution for an accommodation booking site called Holidaze. It provides a user-friendly interface for customers to browse, book, and manage their holiday venue bookings, as well as an admin interface for venue managers to handle venue and booking management.
