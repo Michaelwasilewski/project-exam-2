@@ -4,17 +4,21 @@ const profileSlice = createSlice({
 	name: 'profile',
 	initialState: {
 		singleProfile: null,
+		venueBookings: null,
 	},
 	reducers: {
 		SET_SINGLE_PROFILE: (state, action) => {
 			state.singleProfile = action.payload;
+		},
+		SET_VENUE_BOOKINGS: (state, action) => {
+			state.venueBookings = action.payload;
 		},
 	},
 });
 
 export default profileSlice.reducer;
 
-const { SET_SINGLE_PROFILE } =
+const { SET_SINGLE_PROFILE, SET_VENUE_BOOKINGS } =
 	profileSlice.actions;
 const accessToken = localStorage.getItem(
 	'accessToken'
@@ -103,3 +107,24 @@ export const registerUser = (userData) => {
 			alert('There was an error, try again');
 		});
 };
+
+export const fetchBookings =
+	(name, profileData) => async (dispatch) => {
+		try {
+			const response = await fetch(
+				`https://nf-api.onrender.com/api/v1/holidaze/profiles/${name}/venues?_bookings=true&_owner=true`,
+				{
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${accessToken}`,
+					},
+					body: JSON.stringify(profileData),
+				}
+			);
+			const data = await response.json();
+			dispatch(SET_VENUE_BOOKINGS(data));
+		} catch (e) {
+			console.error(e);
+		}
+	};

@@ -2,14 +2,16 @@ import React, {
 	useEffect,
 	useState,
 } from 'react';
-import { useDispatch } from 'react-redux';
+import {
+	useDispatch,
+	useSelector,
+} from 'react-redux';
 import { fetchSingleProfile } from '../../store/modules/profileSlice';
 import {
 	deleteVenue,
 	deleteBooking,
 	fetchSingleBooking,
 } from '../../store/modules/venueSlice';
-import { useSelector } from 'react-redux';
 import { updateLocalStorage } from '../utils/storage';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -17,7 +19,7 @@ import {
 	useParams,
 	Link,
 } from 'react-router-dom';
-
+import Breadcrumbs from '../Breadcrumbs';
 const ProfilePage = () => {
 	const accessToken = localStorage.getItem(
 		'accessToken'
@@ -156,6 +158,7 @@ const ProfilePage = () => {
 	};
 	return (
 		<div className="rounded-lg shadow p-6 ">
+			<Breadcrumbs />
 			<div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-14 px-10 md:px-20 mb-10 rounded-lg shadow-lg">
 				<h1 className="text-4xl md:text-5xl font-extrabold mb-5">
 					Your Profile
@@ -215,6 +218,11 @@ const ProfilePage = () => {
 							>
 								Change Avatar
 							</button>
+							<Link to="/venue-bookings">
+								<button className="mt-2 px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600">
+									View Bookings on My Venues
+								</button>
+							</Link>
 						</form>
 					</div>
 				</div>

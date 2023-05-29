@@ -9,6 +9,7 @@ import VenuePage from '../components/Views/AllVenues';
 import ProfilePage from '../components/Views/profilePage';
 import AccessDenied from '../components/Views/AccessDenied';
 import UpdateVenue from '../components/Views/UpdateVenue';
+import VenueBookings from '../components/Views/VenueBookings';
 const Router = () => {
 	return (
 		<>
@@ -44,6 +45,10 @@ const Router = () => {
 				<Route
 					path="/venues"
 					element={<VenuePage />}
+				/>
+				<Route
+					path="/venue-bookings"
+					element={<VenueBookings />}
 				/>
 				<Route
 					path="/profile"

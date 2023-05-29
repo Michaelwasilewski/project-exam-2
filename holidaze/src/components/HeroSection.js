@@ -34,12 +34,6 @@ function HeroSection() {
 						Register
 					</NavLink>
 				</div>
-				<p className="text-gray-300 text-md mt-4">
-					Are you a venue owner? Join us as a
-					venue manager and start showcasing and
-					renting out your venues to travelers
-					around the world.
-				</p>
 			</div>
 		</div>
 	);

@@ -17,19 +17,14 @@
 }
 .react-datepicker {
 	font-family: Arial, sans-serif;
-	background-color: rgba(
-		255,
-		255,
-		255,
-		0.9
-	); /* semi-transparent white background */
+	background-color: rgba(255, 255, 255, 0.9);
 	border: none;
 	border-radius: 8px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
 .react-datepicker__header {
-	background-color: #32a89d; /* a teal color similar to your gradient */
+	background-color: #32a89d;
 	border-bottom: none;
 	color: white;
 	padding: 10px 15px;

@@ -13,6 +13,7 @@ import {
 	fetchVenues,
 	fetchTotalVenues,
 } from '../../store/modules/venueSlice';
+import Breadcrumbs from '../Breadcrumbs';
 
 const VenuePage = () => {
 	const dispatch = useDispatch();
@@ -205,6 +206,7 @@ const VenuePage = () => {
 			</div>
 			<div className="container mx-auto my-4">
 				<div className="container mx-auto my-4 px-4">
+					<Breadcrumbs />
 					<div className="text-center py-8 ">
 						<h2 className="text-3xl font-bold text-gray-900 mb-4">
 							Venues

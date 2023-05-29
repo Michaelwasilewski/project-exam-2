@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { newVenue } from '../../store/modules/venueSlice';
+import Breadcrumbs from '../Breadcrumbs';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string()
@@ -139,6 +140,7 @@ const CreateVenueForm = () => {
 							src={Logo}
 							alt="Holidaze Logo"
 						/>
+						<Breadcrumbs />
 						<h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
 							Create a listing
 						</h2>
@@ -414,21 +416,23 @@ const CreateVenueForm = () => {
 						</div>
 
 						<div className="flex flex-col">
-							<label htmlFor="state">State</label>
+							<label htmlFor="Country">
+								Country
+							</label>
 							<input
 								type="text"
-								name="state"
-								id="state"
-								placeholder="Enter the state"
+								name="Country"
+								id="Country"
+								placeholder="Enter the country"
 								className="relative block w-full border-0 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								onChange={formik.handleChange}
 								onBlur={formik.handleBlur}
-								value={formik.values.state}
+								value={formik.values.country}
 							/>
-							{formik.touched.state &&
-							formik.errors.state ? (
+							{formik.touched.country &&
+							formik.errors.country ? (
 								<div className="text-red-600">
-									{formik.errors.state}
+									{formik.errors.country}
 								</div>
 							) : null}
 						</div>
