@@ -111,8 +111,8 @@ const VenueDetail = () => {
 									</span>
 								</p>
 								<p className="text-xl md:text-2xl font-bold text-white tracking-wide">
-									<FaUsers className="inline-block mr-2 text-indigo-500" />
 									Max Guests: {venue.maxGuests}
+									<FaUsers className="inline-block mr-2 text-indigo-500" />
 								</p>
 								<p className="text-xl md:text-2xl font-bold text-white tracking-wide">
 									Rating:{' '}
