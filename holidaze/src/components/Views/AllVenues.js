@@ -103,9 +103,6 @@ const VenuePage = () => {
 			}
 		})
 	);
-	const totalVenues = useSelector(
-		(state) => state.venues.totalVenues
-	);
 
 	useEffect(() => {
 		dispatch(fetchVenues())

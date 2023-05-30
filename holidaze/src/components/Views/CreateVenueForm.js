@@ -52,9 +52,6 @@ const CreateVenueForm = () => {
 		[]
 	);
 
-	const handleSubmit = async (values) => {
-		dispatch(newVenue(values));
-	};
 	const formik = useFormik({
 		initialValues: {
 			name: '',
