@@ -38,7 +38,7 @@ const Footer = () => {
 							<li className="mb-2">
 								<Link
 									to="/create-venue"
-									className="text-white bg-red-600 hover:bg-red-700 block px-3 py-2 rounded-md text-base font-medium"
+									className="text-gray-400 hover:text-gray-200 block font-medium"
 								>
 									Add Venue
 								</Link>
